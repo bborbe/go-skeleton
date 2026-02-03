@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.2.13
+
+- Update Go dependencies (sentry, time, ginkgo, gomega, etc.)
+- Remove Gemini CI workflows
+- Add doc comment to BuildInfoMetrics
+
 ## v0.2.12
 
 - add build info Prometheus metrics with timestamp tracking
