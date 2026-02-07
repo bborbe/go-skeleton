@@ -1,6 +1,6 @@
 module github.com/bborbe/go-skeleton
 
-go 1.25.6
+go 1.25.7
 
 replace (
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911
@@ -8,15 +8,15 @@ replace (
 
 require (
 	github.com/bborbe/boltkv v1.11.1
-	github.com/bborbe/errors v1.5.1
+	github.com/bborbe/errors v1.5.2
 	github.com/bborbe/http v1.26.1
 	github.com/bborbe/kafka v1.22.1
 	github.com/bborbe/kv v1.18.1
-	github.com/bborbe/log v1.6.1
+	github.com/bborbe/log v1.6.2
 	github.com/bborbe/run v1.9.1
-	github.com/bborbe/sentry v1.9.4
+	github.com/bborbe/sentry v1.9.6
 	github.com/bborbe/service v1.9.1
-	github.com/bborbe/time v1.21.1
+	github.com/bborbe/time v1.22.0
 	github.com/getsentry/sentry-go v0.42.0
 	github.com/golang/glog v1.2.5
 	github.com/golangci/golangci-lint v1.64.8
@@ -89,8 +89,8 @@ require (
 	github.com/bborbe/argument/v2 v2.12.1 // indirect
 	github.com/bborbe/collection v1.20.1 // indirect
 	github.com/bborbe/math v1.3.0 // indirect
-	github.com/bborbe/parse v1.10.0 // indirect
-	github.com/bborbe/validation v1.4.0 // indirect
+	github.com/bborbe/parse v1.10.1 // indirect
+	github.com/bborbe/validation v1.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect

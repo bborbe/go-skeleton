@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.2.14
+
+- Update Go to 1.25.7
+- Update github.com/bborbe/errors to v1.5.2
+- Update github.com/bborbe/log to v1.6.2
+- Update github.com/bborbe/sentry to v1.9.6
+- Update github.com/bborbe/time to v1.22.0
+
 ## v0.2.13
 
 - Update Go dependencies (sentry, time, ginkgo, gomega, etc.)
