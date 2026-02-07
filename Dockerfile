@@ -1,7 +1,15 @@
 FROM golang:1.25.6 AS build
-COPY . /workspace
 WORKDIR /workspace
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=vendor -ldflags "-s" -a -installsuffix cgo -o /main
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=bind,target=. \
+    GOCACHE=/root/.cache/go-build \
+    GOMODCACHE=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux go build \
+    -trimpath \
+    -ldflags "-s -w" \
+    -installsuffix cgo \
+    -o /main
 CMD ["/bin/bash"]
 
 FROM alpine:3.23 AS alpine

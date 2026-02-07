@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.0
+
+- optimize Docker build with BuildKit cache mounts for dependencies and build artifacts
+- remove go mod vendor step from build process
+- remove --no-cache flag to leverage Docker layer caching
+- sanitize branch names in Docker tags (replace / with -)
+- fix k8s Makefile include paths
+
 ## v0.2.12
 
 - add build info Prometheus metrics with timestamp tracking

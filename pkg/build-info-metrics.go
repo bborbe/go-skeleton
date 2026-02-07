@@ -25,6 +25,7 @@ func init() {
 
 // BuildInfoMetrics provides metrics tracking for build information.
 // It records build timestamps to Prometheus for monitoring deployment history.
+//
 //counterfeiter:generate -o ../mocks/build-info-metrics.go --fake-name BuildInfoMetrics . BuildInfoMetrics
 type BuildInfoMetrics interface {
 	SetBuildInfo(buildDate *libtime.DateTime)
