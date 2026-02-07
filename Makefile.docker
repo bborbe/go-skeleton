@@ -1,10 +1,9 @@
 DIRS += $(shell find */* -maxdepth 0 -name Makefile -exec dirname "{}" \;)
 
 .PHONY: build
-build: check-go-mod
+build:
 	DOCKER_BUILDKIT=1 \
 	docker build \
-	--no-cache \
 	--rm=true \
 	--platform=linux/amd64 \
 	--build-arg DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
@@ -15,15 +14,6 @@ build: check-go-mod
 	-t $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) \
 	-f Dockerfile .
 
-.PHONY: check-go-mod
-check-go-mod:
-	@if [ -f "go.mod" ]; then \
-		echo "go.mod found, running go mod vendor..."; \
-		go mod vendor; \
-	else \
-		echo "go.mod not found, skipping go mod vendor."; \
-	fi
-
 .PHONY: upload
 upload:
 	docker push $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH)
@@ -31,9 +21,7 @@ upload:
 .PHONY: clean
 clean:
 	docker rmi $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) || true
-	# docker builder prune -a -f
 	docker builder prune --max-used-space 21474836480 -f || true
-	rm -rf vendor
 
 .PHONY: apply
 apply:
