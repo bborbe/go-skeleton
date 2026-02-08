@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.1
+
+- Update GitHub workflows to v1 plugin system
+- Simplify Claude Code action with inline conditions
+- Add ready_for_review and reopened triggers
+
 ## v0.3.0
 
 - optimize Docker build with BuildKit cache mounts for dependencies and build artifacts
