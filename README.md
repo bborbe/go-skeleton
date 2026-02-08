@@ -10,6 +10,7 @@
 
 ## Table of Contents
 
+* [Requirements](#requirements)
 * [Technologies Demonstrated](#technologies-demonstrated)
 * [Installation](#installation)
 * [Quick Start](#quick-start)
@@ -24,6 +25,15 @@
 * [Testing](#testing)
 * [Usage as Template](#usage-as-template)
 * [License](#license)
+
+---
+
+## Requirements
+
+- **Go 1.25+** (tested with Go 1.25.7)
+- **Docker** (for containerized builds)
+- **Make** (for development commands)
+- **Kafka** (optional, for message broker features)
 
 ---
 
@@ -63,14 +73,15 @@ make precommit
 
 ## Standard Endpoints
 
-The service includes these standard endpoints:
-- `/healthz` - Health check
-- `/readiness` - Readiness check
-- `/metrics` - Prometheus metrics
-- `/resetdb` - Database reset
-- `/setloglevel/{level}` - Dynamic log level adjustment
-- `/testloglevel` - Test logging at all levels
-- `/sentryalert` - Test Sentry integration
+| Endpoint | Description |
+|----------|-------------|
+| `/healthz` | Health check |
+| `/readiness` | Readiness check |
+| `/metrics` | Prometheus metrics |
+| `/resetdb` | Database reset |
+| `/setloglevel/{level}` | Dynamic log level adjustment |
+| `/testloglevel` | Test logging at all levels |
+| `/sentryalert` | Test Sentry integration |
 
 ## Development Commands
 
@@ -88,36 +99,46 @@ make precommit # Complete development workflow
 Configuration is managed through environment variables. See `example.env` for development defaults.
 
 ### Runtime Configuration
-- `KAFKA_BROKERS` - Kafka broker addresses (default: localhost:9092)
-- `LISTEN` - HTTP server listen address (default: :8080)
-- `SENTRY_DSN` - Sentry error tracking DSN (required for production)
-- `SENTRY_PROXY` - Sentry proxy URL (optional)
-- `DATADIR` - Database storage directory (required)
-- `BATCH_SIZE` - Kafka batch consume size (default: 1)
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `KAFKA_BROKERS` | Kafka broker addresses | `localhost:9092` |
+| `LISTEN` | HTTP server listen address | `:8080` |
+| `SENTRY_DSN` | Sentry error tracking DSN | (required for production) |
+| `SENTRY_PROXY` | Sentry proxy URL | (optional) |
+| `DATADIR` | Database storage directory | (required) |
+| `BATCH_SIZE` | Kafka batch consume size | `1` |
 
 ### Build/Deployment Configuration
-- `DOCKER_REGISTRY` - Docker registry for image publishing
-- `IMAGE` - Docker image name
-- `CLUSTER_CONTEXT` - Kubernetes cluster context
-- `BUILD_GIT_VERSION` - Build version (auto-set in CI/Docker)
-- `BUILD_GIT_COMMIT` - Build commit hash (auto-set in CI/Docker)
-- `BUILD_DATE` - Build timestamp (auto-set in CI/Docker)
+
+| Variable | Description |
+|----------|-------------|
+| `DOCKER_REGISTRY` | Docker registry for image publishing |
+| `IMAGE` | Docker image name |
+| `CLUSTER_CONTEXT` | Kubernetes cluster context |
+| `BUILD_GIT_VERSION` | Build version (auto-set in CI/Docker) |
+| `BUILD_GIT_COMMIT` | Build commit hash (auto-set in CI/Docker) |
+| `BUILD_DATE` | Build timestamp (auto-set in CI/Docker) |
 
 ## Deployment
 
 ### Kubernetes
+
 The `k8s/` directory contains complete Kubernetes manifests:
+
 - Choose between Deployment (`skeleton-deploy.yaml`) or StatefulSet (`skeleton-sts.yaml`)
 - Service, Ingress, Secret, and User configurations included
 - **To activate**: Change replicas from 0 → 1
 - **For Deployment**: Delete StatefulSet manifest if using Deployment
 
 ### Docker
+
 Multi-stage Docker build included. See `Dockerfile` and `Makefile.docker`.
 
 ## Architecture
 
 Standard Go microservice architecture:
+
 - `main.go` - Application entry point with dependency injection
 - `pkg/factory/` - Factory functions for handler creation
 - `pkg/handler/` - HTTP handlers for various endpoints
