@@ -30,7 +30,7 @@
 
 ## Requirements
 
-- **Go 1.25+** (tested with Go 1.25.7)
+- **Go 1.25+** (tested with Go 1.25.7 or later)
 - **Docker** (for containerized builds)
 - **Make** (for development commands)
 - **Kafka** (optional, for message broker features)
