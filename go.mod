@@ -1,6 +1,6 @@
 module github.com/bborbe/go-skeleton
 
-go 1.26.0
+go 1.26.1
 
 replace (
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911
@@ -13,10 +13,10 @@ require (
 	github.com/bborbe/kafka v1.22.3
 	github.com/bborbe/kv v1.18.3
 	github.com/bborbe/log v1.6.3
-	github.com/bborbe/run v1.9.3
+	github.com/bborbe/run v1.9.4
 	github.com/bborbe/sentry v1.9.8
 	github.com/bborbe/service v1.9.3
-	github.com/bborbe/time v1.22.2
+	github.com/bborbe/time v1.24.1
 	github.com/getsentry/sentry-go v0.43.0
 	github.com/golang/glog v1.2.5
 	github.com/golangci/golangci-lint v1.64.8
@@ -29,7 +29,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.1
 	github.com/prometheus/client_golang v1.23.2
-	github.com/securego/gosec/v2 v2.24.6
+	github.com/securego/gosec/v2 v2.24.7
 	github.com/segmentio/golines v0.13.0
 	github.com/shoenig/go-modtool v0.5.0
 	golang.org/x/vuln v1.1.4
@@ -87,10 +87,10 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/bborbe/argument/v2 v2.12.3 // indirect
-	github.com/bborbe/collection v1.20.1 // indirect
+	github.com/bborbe/collection v1.20.3 // indirect
 	github.com/bborbe/math v1.3.1 // indirect
-	github.com/bborbe/parse v1.10.1 // indirect
-	github.com/bborbe/validation v1.4.1 // indirect
+	github.com/bborbe/parse v1.10.3 // indirect
+	github.com/bborbe/validation v1.4.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect
@@ -141,7 +141,7 @@ require (
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/docker/cli v28.3.3+incompatible // indirect
+	github.com/docker/cli v29.2.1+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v28.3.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.3 // indirect
@@ -462,36 +462,46 @@ exclude (
 	k8s.io/api v0.34.2
 	k8s.io/api v0.34.3
 	k8s.io/api v0.34.4
+	k8s.io/api v0.34.5
 	k8s.io/api v0.35.0
 	k8s.io/api v0.35.1
+	k8s.io/api v0.35.2
 	k8s.io/apiextensions-apiserver v0.34.0
 	k8s.io/apiextensions-apiserver v0.34.1
 	k8s.io/apiextensions-apiserver v0.34.2
 	k8s.io/apiextensions-apiserver v0.34.3
 	k8s.io/apiextensions-apiserver v0.34.4
+	k8s.io/apiextensions-apiserver v0.34.5
 	k8s.io/apiextensions-apiserver v0.35.0
 	k8s.io/apiextensions-apiserver v0.35.1
+	k8s.io/apiextensions-apiserver v0.35.2
 	k8s.io/apimachinery v0.34.0
 	k8s.io/apimachinery v0.34.1
 	k8s.io/apimachinery v0.34.2
 	k8s.io/apimachinery v0.34.3
 	k8s.io/apimachinery v0.34.4
+	k8s.io/apimachinery v0.34.5
 	k8s.io/apimachinery v0.35.0
 	k8s.io/apimachinery v0.35.1
+	k8s.io/apimachinery v0.35.2
 	k8s.io/client-go v0.34.0
 	k8s.io/client-go v0.34.1
 	k8s.io/client-go v0.34.2
 	k8s.io/client-go v0.34.3
 	k8s.io/client-go v0.34.4
+	k8s.io/client-go v0.34.5
 	k8s.io/client-go v0.35.0
 	k8s.io/client-go v0.35.1
+	k8s.io/client-go v0.35.2
 	k8s.io/code-generator v0.34.0
 	k8s.io/code-generator v0.34.1
 	k8s.io/code-generator v0.34.2
 	k8s.io/code-generator v0.34.3
 	k8s.io/code-generator v0.34.4
+	k8s.io/code-generator v0.34.5
 	k8s.io/code-generator v0.35.0
 	k8s.io/code-generator v0.35.1
+	k8s.io/code-generator v0.35.2
 	sigs.k8s.io/structured-merge-diff/v6 v6.0.0
 	sigs.k8s.io/structured-merge-diff/v6 v6.1.0
 	sigs.k8s.io/structured-merge-diff/v6 v6.2.0
