@@ -11,7 +11,7 @@ require (
 	github.com/bborbe/errors v1.5.3
 	github.com/bborbe/http v1.26.3
 	github.com/bborbe/kafka v1.22.3
-	github.com/bborbe/kv v1.18.3
+	github.com/bborbe/kv v1.18.4
 	github.com/bborbe/log v1.6.3
 	github.com/bborbe/run v1.9.4
 	github.com/bborbe/sentry v1.9.8
