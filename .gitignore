@@ -13,3 +13,4 @@
 /prompts/log
 /vendor
 gha-creds-*.json
+/specs/log
