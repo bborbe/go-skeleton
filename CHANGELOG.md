@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.6
+
+- chore: validate project health — all tests, linting, and precommit checks pass
+
 ## v0.3.5
 
 - go mod update
