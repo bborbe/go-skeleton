@@ -32,8 +32,6 @@ linters:
           deny:
             - pkg: "sigs.k8s.io/structured-merge-diff/v4"
               desc: "use sigs.k8s.io/structured-merge-diff/v6 instead"
-            - pkg: "github.com/containerd/containerd"
-              desc: "use github.com/containerd/containerd/v2 instead"
             - pkg: "github.com/pkg/errors"
               desc: "use github.com/bborbe/errors instead"
             - pkg: "github.com/bborbe/argument"
