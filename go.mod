@@ -10,7 +10,7 @@ require (
 	github.com/bborbe/boltkv v1.12.0
 	github.com/bborbe/errors v1.5.8
 	github.com/bborbe/http v1.26.7
-	github.com/bborbe/kafka v1.22.8
+	github.com/bborbe/kafka v1.22.9
 	github.com/bborbe/kv v1.19.2
 	github.com/bborbe/log v1.6.8
 	github.com/bborbe/run v1.9.12

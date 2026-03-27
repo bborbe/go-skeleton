@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.7
+
+- Update bborbe/* libraries (boltkv, errors, http, kafka, kv, log, run, sentry, service, time)
+- Update golangci-lint to v2.11.4 and gosec to v2.25.0
+- Update docker, containerd, moby dependencies
+- Update golang.org/x/* and opentelemetry packages
+- Remove unused exclude directives and clean up go.mod
+
 ## v0.3.6
 
 - chore: validate project health — all tests, linting, and precommit checks pass
