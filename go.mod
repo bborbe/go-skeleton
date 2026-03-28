@@ -9,7 +9,7 @@ replace (
 require (
 	github.com/bborbe/boltkv v1.12.0
 	github.com/bborbe/errors v1.5.8
-	github.com/bborbe/http v1.26.7
+	github.com/bborbe/http v1.26.8
 	github.com/bborbe/kafka v1.22.9
 	github.com/bborbe/kv v1.19.2
 	github.com/bborbe/log v1.6.8
@@ -101,7 +101,7 @@ require (
 	github.com/bazelbuild/buildtools v0.0.0-20260319080235-05d2ebe49b0f // indirect
 	github.com/bborbe/argument/v2 v2.12.10 // indirect
 	github.com/bborbe/collection v1.20.7 // indirect
-	github.com/bborbe/math v1.3.5 // indirect
+	github.com/bborbe/math v1.3.6 // indirect
 	github.com/bborbe/parse v1.10.8 // indirect
 	github.com/bborbe/validation v1.4.9 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
