@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.8
+
+- Update go-git/go-git to v5.17.1 (fix security vulnerabilities)
+- Clean up unused osv-scanner ignore entries
+- Add .trivyignore for docker indirect dep CVEs
+- Improve trivy Makefile target with .trivyignore support and vendor skip
+
 ## v0.3.7
 
 - Update bborbe/* libraries (boltkv, errors, http, kafka, kv, log, run, sentry, service, time)
