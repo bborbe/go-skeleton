@@ -2,18 +2,25 @@ module github.com/bborbe/go-skeleton
 
 go 1.26.1
 
-replace github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.0
+replace (
+	github.com/anthropics/anthropic-sdk-go => github.com/anthropics/anthropic-sdk-go v1.26.0
+	github.com/charmbracelet/x/cellbuf => github.com/charmbracelet/x/cellbuf v0.0.15
+	github.com/denis-tingaikin/go-header => github.com/denis-tingaikin/go-header v0.5.0
+	github.com/diskfs/go-diskfs => github.com/diskfs/go-diskfs v1.7.0
+	github.com/nunnatsa/ginkgolinter/types => github.com/nunnatsa/ginkgolinter v0.19.1
+	github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.0
+)
 
 require (
 	github.com/bborbe/boltkv v1.12.2
-	github.com/bborbe/errors v1.5.8
-	github.com/bborbe/http v1.26.8
-	github.com/bborbe/kafka v1.22.9
+	github.com/bborbe/errors v1.5.9
+	github.com/bborbe/http v1.26.9
+	github.com/bborbe/kafka v1.22.10
 	github.com/bborbe/kv v1.19.4
-	github.com/bborbe/log v1.6.8
+	github.com/bborbe/log v1.6.10
 	github.com/bborbe/run v1.9.15
-	github.com/bborbe/sentry v1.9.13
-	github.com/bborbe/service v1.9.7
+	github.com/bborbe/sentry v1.9.14
+	github.com/bborbe/service v1.9.8
 	github.com/bborbe/time v1.25.6
 	github.com/getsentry/sentry-go v0.44.1
 	github.com/golang/glog v1.2.5
@@ -97,10 +104,10 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/ayoubfaouzi/pkcs7 v0.2.2 // indirect
 	github.com/bazelbuild/buildtools v0.0.0-20260319080235-05d2ebe49b0f // indirect
-	github.com/bborbe/argument/v2 v2.12.10 // indirect
-	github.com/bborbe/collection v1.20.7 // indirect
-	github.com/bborbe/math v1.3.6 // indirect
-	github.com/bborbe/parse v1.10.8 // indirect
+	github.com/bborbe/argument/v2 v2.12.15 // indirect
+	github.com/bborbe/collection v1.20.8 // indirect
+	github.com/bborbe/math v1.3.7 // indirect
+	github.com/bborbe/parse v1.10.9 // indirect
 	github.com/bborbe/validation v1.4.9 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
@@ -140,7 +147,7 @@ require (
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/containerd/fifo v1.1.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
-	github.com/containerd/platforms v1.0.0-rc.3 // indirect
+	github.com/containerd/platforms v1.0.0-rc.4 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.18.2 // indirect
 	github.com/containerd/ttrpc v1.2.8 // indirect
 	github.com/containerd/typeurl/v2 v2.2.3 // indirect
@@ -205,7 +212,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golangci/asciicheck v0.5.0 // indirect
-	github.com/golangci/dupl v0.0.0-20250308024227-f665c8d69b32 // indirect
+	github.com/golangci/dupl v0.0.0-20260401084720-c99c5cf5c202 // indirect
 	github.com/golangci/go-printf-func-name v0.1.1 // indirect
 	github.com/golangci/gofmt v0.0.0-20250106114630-d62b90e6713d // indirect
 	github.com/golangci/golines v0.15.0 // indirect
@@ -222,7 +229,7 @@ require (
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.14 // indirect
-	github.com/googleapis/gax-go/v2 v2.20.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.21.0 // indirect
 	github.com/gookit/color v1.6.0 // indirect
 	github.com/gordonklaus/ineffassign v0.2.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
@@ -311,7 +318,7 @@ require (
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/opencontainers/runtime-spec v1.3.0 // indirect
 	github.com/opencontainers/selinux v1.13.1 // indirect
-	github.com/ossf/osv-schema/bindings/go v0.0.0-20260324022310-df534973d091 // indirect
+	github.com/ossf/osv-schema/bindings/go v0.0.0-20260331231022-2a6a0b9b0ccd // indirect
 	github.com/owenrumney/go-sarif/v3 v3.3.0 // indirect
 	github.com/package-url/packageurl-go v0.1.5 // indirect
 	github.com/pandatix/go-cvss v0.6.2 // indirect
@@ -436,12 +443,12 @@ require (
 	golang.org/x/text v0.35.0 // indirect
 	golang.org/x/tools v0.43.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/api v0.273.0 // indirect
-	google.golang.org/genai v1.52.0 // indirect
-	google.golang.org/genproto v0.0.0-20260330182312-d5a96adf58d8 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260330182312-d5a96adf58d8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260330182312-d5a96adf58d8 // indirect
-	google.golang.org/grpc v1.79.3 // indirect
+	google.golang.org/api v0.273.1 // indirect
+	google.golang.org/genai v1.52.1 // indirect
+	google.golang.org/genproto v0.0.0-20260401024825-9d38bb4040a9 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260401024825-9d38bb4040a9 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9 // indirect
+	google.golang.org/grpc v1.80.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/ini.v1 v1.67.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
@@ -453,7 +460,7 @@ require (
 	modernc.org/sqlite v1.48.0 // indirect
 	mvdan.cc/gofumpt v0.9.2 // indirect
 	mvdan.cc/unparam v0.0.0-20251027182757-5beb8c8f8f15 // indirect
-	osv.dev/bindings/go v0.0.0-20260331050320-0ee5ff0986a9 // indirect
+	osv.dev/bindings/go v0.0.0-20260401061933-2cc8311f7f48 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 	www.velocidex.com/golang/go-ntfs v0.2.0 // indirect
 	www.velocidex.com/golang/regparser v0.0.0-20250203141505-31e704a67ef7 // indirect
