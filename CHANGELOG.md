@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.9
+
+- Update dependencies (boltkv, kv, run, go-git, anthropic-sdk-go, and others)
+- Replace ginkgolinter/types replace directive with opencontainers/runtime-spec
+- Enable dark-factory autoRelease
+
 ## v0.3.8
 
 - Update go-git/go-git to v5.17.1 (fix security vulnerabilities)
