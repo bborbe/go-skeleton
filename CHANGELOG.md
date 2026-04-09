@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.11
+
+- bump golang base image to 1.26.2
+- update go.mod: boltkv, run, time, sentry-go, counterfeiter, validation, sys
+- add vuln/CVE excludes to osv-scanner, trivyignore
+- improve vulncheck to filter known ignored findings
+
 ## v0.3.10
 
 - update bborbe/* deps (errors, http, kafka, log, sentry, service)

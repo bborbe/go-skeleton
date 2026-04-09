@@ -1,6 +1,6 @@
 module github.com/bborbe/go-skeleton
 
-go 1.26.1
+go 1.26.2
 
 replace (
 	github.com/anthropics/anthropic-sdk-go => github.com/anthropics/anthropic-sdk-go v1.26.0
@@ -12,17 +12,17 @@ replace (
 )
 
 require (
-	github.com/bborbe/boltkv v1.12.2
+	github.com/bborbe/boltkv v1.12.3
 	github.com/bborbe/errors v1.5.9
 	github.com/bborbe/http v1.26.9
 	github.com/bborbe/kafka v1.22.10
 	github.com/bborbe/kv v1.19.4
 	github.com/bborbe/log v1.6.10
-	github.com/bborbe/run v1.9.15
+	github.com/bborbe/run v1.9.17
 	github.com/bborbe/sentry v1.9.14
 	github.com/bborbe/service v1.9.8
-	github.com/bborbe/time v1.25.6
-	github.com/getsentry/sentry-go v0.44.1
+	github.com/bborbe/time v1.25.8
+	github.com/getsentry/sentry-go v0.45.0
 	github.com/golang/glog v1.2.5
 	github.com/golangci/golangci-lint/v2 v2.11.4
 	github.com/google/addlicense v1.2.0
@@ -30,7 +30,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/incu6us/goimports-reviser/v3 v3.12.6
 	github.com/kisielk/errcheck v1.10.0
-	github.com/maxbrunsfeld/counterfeiter/v6 v6.12.1
+	github.com/maxbrunsfeld/counterfeiter/v6 v6.12.2
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.1
 	github.com/prometheus/client_golang v1.23.2
@@ -108,7 +108,7 @@ require (
 	github.com/bborbe/collection v1.20.8 // indirect
 	github.com/bborbe/math v1.3.7 // indirect
 	github.com/bborbe/parse v1.10.9 // indirect
-	github.com/bborbe/validation v1.4.9 // indirect
+	github.com/bborbe/validation v1.4.10 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect
@@ -437,7 +437,7 @@ require (
 	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260316223853-b6b0c46d1ccd // indirect
 	golang.org/x/term v0.41.0 // indirect
 	golang.org/x/text v0.35.0 // indirect
