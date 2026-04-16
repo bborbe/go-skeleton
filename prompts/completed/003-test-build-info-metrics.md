@@ -7,7 +7,6 @@ queued: "2026-04-16T17:55:40Z"
 started: "2026-04-16T19:57:05Z"
 completed: "2026-04-16T19:58:54Z"
 branch: test/build-info-metrics
-lastFailReason: 'execute prompt: docker run failed: wait command: exit status 128'
 ---
 
 <summary>
