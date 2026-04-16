@@ -1,8 +1,14 @@
 ---
-status: approved
+status: executing
+summary: Added BuildInfoMetrics test files (export_test.go and _test.go) with Ginkgo/Gomega tests covering non-nil and nil buildDate branches, achieving 100% coverage on pkg package.
+container: go-skeleton-003-test-build-info-metrics
+dark-factory-version: v0.118.0
 created: "2026-04-16T19:40:00Z"
 queued: "2026-04-16T17:55:40Z"
+started: "2026-04-16T19:57:05Z"
+completed: "2026-04-16T18:26:05Z"
 branch: test/build-info-metrics
+lastFailReason: 'execute prompt: docker run failed: wait command: exit status 128'
 ---
 
 <summary>
