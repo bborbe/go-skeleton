@@ -1,6 +1,8 @@
 ---
-status: draft
+status: approved
 created: "2026-04-16T19:40:00Z"
+queued: "2026-04-16T17:55:40Z"
+branch: test/build-info-metrics
 ---
 
 <summary>
