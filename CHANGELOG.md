@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- test: add Ginkgo/Gomega tests for BuildInfoMetrics covering non-nil and nil buildDate branches
+
 ## v0.3.12
 
 - chore: update go.mod dependencies (bborbe/* libs, anthropic-sdk-go, golang.org/x/*, google APIs, containerd, otel, modernc)
