@@ -8,9 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.3.13
 
 - test: add Ginkgo/Gomega tests for BuildInfoMetrics covering non-nil and nil buildDate branches
+- update test suites with GinkgoConfiguration timeout and -buildvcs=false
 
 ## v0.3.12
 
