@@ -18,6 +18,7 @@ require (
 	github.com/bborbe/kafka v1.22.11
 	github.com/bborbe/kv v1.19.5
 	github.com/bborbe/log v1.6.11
+	github.com/bborbe/metrics v0.5.1
 	github.com/bborbe/run v1.9.18
 	github.com/bborbe/sentry v1.9.15
 	github.com/bborbe/service v1.9.9
@@ -37,7 +38,7 @@ require (
 	github.com/securego/gosec/v2 v2.25.0
 	github.com/segmentio/golines v0.13.0
 	github.com/shoenig/go-modtool v0.7.1
-	golang.org/x/vuln v1.2.0
+	golang.org/x/vuln v1.3.0
 )
 
 require (
@@ -190,7 +191,7 @@ require (
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.8.0 // indirect
-	github.com/go-git/go-git/v5 v5.17.2 // indirect
+	github.com/go-git/go-git/v5 v5.18.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
@@ -264,7 +265,6 @@ require (
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/kulti/thelper v0.7.1 // indirect
 	github.com/kunwardeep/paralleltest v1.0.15 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lasiar/canonicalheader v1.1.2 // indirect
 	github.com/ldez/exptostd v0.4.5 // indirect
 	github.com/ldez/gomoddirectives v0.8.0 // indirect
@@ -438,7 +438,7 @@ require (
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260414141209-fac6e1c83189 // indirect
+	golang.org/x/telemetry v0.0.0-20260421165255-392afab6f40e // indirect
 	golang.org/x/term v0.42.0 // indirect
 	golang.org/x/text v0.36.0 // indirect
 	golang.org/x/tools v0.44.0 // indirect

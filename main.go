@@ -15,6 +15,7 @@ import (
 	libkafka "github.com/bborbe/kafka"
 	libkv "github.com/bborbe/kv"
 	"github.com/bborbe/log"
+	libmetrics "github.com/bborbe/metrics"
 	"github.com/bborbe/run"
 	libsentry "github.com/bborbe/sentry"
 	"github.com/bborbe/service"
@@ -23,7 +24,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/bborbe/go-skeleton/pkg"
 	"github.com/bborbe/go-skeleton/pkg/factory"
 )
 
@@ -47,7 +47,7 @@ type application struct {
 }
 
 func (a *application) Run(ctx context.Context, sentryClient libsentry.Client) error {
-	pkg.NewBuildInfoMetrics().SetBuildInfo(a.BuildDate)
+	libmetrics.NewBuildInfoMetrics().SetBuildInfo(a.BuildGitVersion, a.BuildGitCommit, a.BuildDate)
 
 	saramaClient, err := libkafka.CreateSaramaClient(
 		ctx,

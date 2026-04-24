@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.14
+
+- Migrate `BuildInfoMetrics` from inlined `pkg/build-info-metrics.go` to shared `github.com/bborbe/metrics` v0.5.1; call site now passes `(version, commit, buildDate)` so `build_info{version, commit}` labels populate from the build args
+- Remove `pkg/build-info-metrics.go`, its tests, and `mocks/build-info-metrics.go` (moved to shared package)
+- Bump indirect dependencies (`go-git`, `golang.org/x/telemetry`, `golang.org/x/vuln`)
+
 ## v0.3.13
 
 - test: add Ginkgo/Gomega tests for BuildInfoMetrics covering non-nil and nil buildDate branches
