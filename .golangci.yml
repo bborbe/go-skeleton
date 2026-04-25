@@ -6,6 +6,7 @@ run:
 
 linters:
   enable:
+    # Core
     - govet
     - errcheck
     - staticcheck
@@ -15,12 +16,18 @@ linters:
     - gocyclo
     - depguard
     - dupl
+
+    # SRP & maintainability
     - funlen
     - gocognit
     - nestif
     - maintidx
+
+    # Readability & style
     - errname
     - unparam
+
+    # Safety / defensive coding
     - bodyclose
     - forcetypeassert
     - asasalint
@@ -42,15 +49,30 @@ linters:
               desc: "deprecated, use revive or staticcheck instead"
             - pkg: "io/ioutil"
               desc: "deprecated since Go 1.16, use io and os packages instead"
+
     funlen:
       lines: 80
       statements: 50
+
     gocognit:
       min-complexity: 20
+
     nestif:
       min-complexity: 4
+
     maintidx:
       min-maintainability-index: 20
+
+    revive:
+      rules:
+        # Total-line limit matches the CLAUDE.md rule (file > 2000 lines = smell).
+        # skipBlankLines and skipComments are explicitly false so the count matches
+        # what `wc -l` reports and what readers see in editor scrollbars.
+        - name: file-length-limit
+          arguments:
+            - max: 2000
+              skipBlankLines: false
+              skipComments: false
   exclusions:
     presets:
       - comments
@@ -74,7 +96,13 @@ linters:
           - dupl
         path: "_test\\.go$"
       - linters:
+          - errcheck
+        path: "_test\\.go$"
+      - linters:
           - unparam
+        path: "_test\\.go$"
+      - linters:
+          - gosec
         path: "_test\\.go$"
 
 formatters:
