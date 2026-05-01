@@ -6,7 +6,7 @@ include example.env
 SERVICE = bborbe/go-skeleton
 
 run:
-	@go run -mod=mod main.go \
+	@go run main.go \
 	-sentry-dsn="$(shell teamvault-url --teamvault-config ~/.teamvault.json --teamvault-key=${SENTRY_DSN_KEY})" \
 	-listen="localhost:${SKELETON_PORT}" \
 	-kafka-brokers="${KAFKA_BROKERS}" \
