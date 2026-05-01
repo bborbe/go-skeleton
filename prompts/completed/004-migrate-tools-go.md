@@ -1,8 +1,12 @@
 ---
 status: completed
+summary: Migrated go-skeleton from tools.go to tools.env + Makefile @version pattern; go.mod reduced from 467 to 67 lines, all tool invocations migrated to @VERSION, //go:generate directives updated to @v6.12.2, replace block removed, all CVE suppressions cleaned up, make precommit passes.
+container: go-skeleton-004-migrate-tools-go
+dark-factory-version: dev
 created: "2026-05-01T07:24:19Z"
 queued: "2026-05-01T07:24:19Z"
-completed: "2026-05-01T07:37:46Z"
+started: "2026-05-01T07:24:21Z"
+completed: "2026-05-01T08:14:10Z"
 ---
 
 # Migrate from tools.go to tools.env + Makefile @version pattern
