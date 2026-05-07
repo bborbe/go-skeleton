@@ -8,12 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.3.15
 
-- chore: migrate to tools.env + Makefile @version pattern; remove tools.go and obsolete replace block. go.mod reduced from 467 to 67 lines
-- chore: bump bborbe/* direct deps to latest (boltkv v1.12.5, errors v1.5.12, http v1.26.11, kafka v1.22.12, kv v1.19.6, log v1.6.12, metrics v0.5.2, run v1.9.23, sentry v1.9.16, service v1.9.10, time v1.25.10)
-- chore: remove all CVE suppressions from .osv-scanner.toml (docker, blevesearch/bleve, jackc/pgx, aws-sdk-go-v2, and bbolt entries all unused after dep graph cleanup)
-- fix: add GODEBUG=gotypesalias=1 to errcheck invocation to support generic type aliases used by kv v1.19.6 (errcheck@v1.10.0 uses golang.org/x/tools v0.30.0 which requires this flag)
+- chore: migrate to tools.env + Makefile @version pattern; remove tools.go and obsolete replace block; go.mod reduced from 467 to 67 lines
+- chore: bump bborbe/* direct deps to latest (boltkv v1.12.6, errors v1.5.13, http v1.26.11, kafka v1.22.12, kv v1.19.8, log v1.6.13, metrics v0.5.3, run v1.9.24, sentry v1.9.17, service v1.9.11, time v1.25.11)
+- chore: remove all CVE suppressions from .osv-scanner.toml (all entries unused after dep graph cleanup)
+- fix: add GODEBUG=gotypesalias=1 to errcheck invocation to support generic type aliases used by kv v1.19.x
+- chore: bump golang base image 1.26.2→1.26.3; add revive file-length-limit rule to golangci.yml
 
 ## v0.3.14
 
