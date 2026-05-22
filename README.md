@@ -169,3 +169,6 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 ## License
 
 BSD-style license. See [LICENSE](LICENSE) file for details.
+
+
+<!-- throwaway commit 2026-05-22T19:05:42Z: exercises bborbe-pr-reviewer-dev app auth (spec 033 R3) -->
