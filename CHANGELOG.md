@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.16
+
+- Bump bborbe/* deps (boltkv, kv, service, time, kafka, http, run, etc.)
+- Upgrade golang.org/x/* (crypto, net, sys, text)
+- Upgrade IBM/sarama v1.47.0 → v1.48.1 and test libs (ginkgo, gomega)
+- vulncheck: add -show verbose on unexpected findings
+- trivy: support project-level .trivy-secret.yaml config
+
 ## v0.3.15
 
 - chore: migrate to tools.env + Makefile @version pattern; remove tools.go and obsolete replace block; go.mod reduced from 467 to 67 lines
