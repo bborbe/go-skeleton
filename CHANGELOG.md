@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.3.17
+
+- bump github.com/bborbe/run v1.9.26 → v1.9.27
+- bump golang.org/x/net v0.54.0 → v0.55.0
+- add Makefile fix target for bulk dep updates
+
 ## v0.3.16
 
 - Bump bborbe/* deps (boltkv, kv, service, time, kafka, http, run, etc.)
