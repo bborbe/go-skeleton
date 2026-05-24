@@ -22,10 +22,6 @@ var _ = Describe("Main", func() {
 		_, err = gexec.Build(".", "-mod=mod", "-buildvcs=false")
 		Expect(err).NotTo(HaveOccurred())
 	})
-
-	It("intentionally fails — testing build-fix-agent pipeline 2026-05-24 (revert after)", func() {
-		Expect(1).To(Equal(2))
-	})
 })
 
 func TestSuite(t *testing.T) {
