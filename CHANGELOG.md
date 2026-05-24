@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+<!-- e2e probe 2026-05-24: trigger watcher/github-pr App auth pickup in dev + prod -->
+
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
 * MAJOR version when you make incompatible API changes,
