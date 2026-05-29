@@ -8,3 +8,8 @@
 # Absence of this file (or release.autoRelease: false) = opted out (no auto-release).
 release:
   autoRelease: true
+
+# prReviewer.autoApprove: when true, the pr-reviewer agent posts an APPROVING
+# review (instead of comment-only) once its review verdict is "approve".
+prReviewer:
+  autoApprove: true
