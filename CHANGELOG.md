@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- add `.maintainer.yaml` opting into github-releaser auto-release (release.autoRelease: true)
+
 ## v0.3.17
 
 - bump github.com/bborbe/run v1.9.26 → v1.9.27
