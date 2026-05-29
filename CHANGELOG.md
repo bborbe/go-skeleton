@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- test: exercise maintainer github-release watcher .maintainer.yaml gate
+
 ## v0.3.17
 
 - bump github.com/bborbe/run v1.9.26 → v1.9.27
