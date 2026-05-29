@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 - add `.maintainer.yaml` opting into github-releaser auto-release (release.autoRelease: true)
+- chore: trigger first github-releaser e2e (move master so the release watcher emits)
 
 ## v0.3.17
 
