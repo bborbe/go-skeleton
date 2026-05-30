@@ -6,6 +6,8 @@
 
 **A template/skeleton project for creating new Go microservices.** This project demonstrates patterns and integration of common technologies, serving as a copy-paste starting point for new services rather than a complete production implementation.
 
+> Copy this repository as the starting point for a new service, then replace the module path and the example handler with your own.
+
 ---
 
 ## Table of Contents
