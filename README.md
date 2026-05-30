@@ -169,3 +169,5 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 ## License
 
 BSD-style license. See [LICENSE](LICENSE) file for details.
+
+<!-- canary: verify pr-reviewer plugin-bake dev image (maintainer spec 054) — do not merge -->
