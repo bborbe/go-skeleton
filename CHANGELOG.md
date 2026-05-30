@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: trigger github-releaser pre-push-guard e2e on dev
+
 ## v0.4.0
 
 - add `.maintainer.yaml` opting into github-releaser auto-release (release.autoRelease: true)
