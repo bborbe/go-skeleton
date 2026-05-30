@@ -12,6 +12,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 - add `.maintainer.yaml` opting into github-releaser auto-release (release.autoRelease: true)
 - chore: re-trigger github-releaser e2e after clone-url HTTPS fix
+- chore: re-trigger github-releaser e2e after clone default-branch fix
 - chore: trigger first github-releaser e2e (move master so the release watcher emits)
 
 ## v0.3.17
