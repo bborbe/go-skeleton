@@ -13,5 +13,6 @@
 # the new pr-reviewer image is deployed to prod).
 release:
   autoRelease: true
+  changelogRewrite: true
 prReviewer:
   autoApprove: true
