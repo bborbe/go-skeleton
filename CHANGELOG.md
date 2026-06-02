@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 - chore: trigger github-releaser ai_review failure-path smoke test
+- bump bborbe/kafka v1.22.15 → v1.23.0; indirect deps refreshed via go mod tidy
 
 ## v0.4.1
 
