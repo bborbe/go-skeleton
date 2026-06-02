@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.4.2
 
 - chore: trigger github-releaser ai_review failure-path smoke test
 - bump bborbe/kafka v1.22.15 → v1.23.0; indirect deps refreshed via go mod tidy
