@@ -8,15 +8,6 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
-
-- fix: fix bug
-- chore: bump foo
-- chore: bump bar
-- chore: bump baz
-- chore: refactor
-- cleanup imports
-
 ## v0.4.2
 
 - chore: trigger github-releaser ai_review failure-path smoke test

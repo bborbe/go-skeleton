@@ -13,10 +13,5 @@
 # the new pr-reviewer image is deployed to prod).
 release:
   autoRelease: true
-  # release.changelogRewrite: when true, the github-releaser planning step
-  # evaluates ## Unreleased against the Changelog Quality Guide and may emit
-  # a cleaned `rewritten_unreleased`; execution applies the rewrite + header
-  # rename in a single commit. Default false preserves header-rename-only.
-  changelogRewrite: true
 prReviewer:
   autoApprove: true
