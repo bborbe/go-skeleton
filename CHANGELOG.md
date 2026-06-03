@@ -16,6 +16,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 - chore: bump bborbe/run v1.9.27 → v1.9.28
 - chore: bump bborbe/errors v1.5.13 → v1.5.14
 - chore: trigger github-releaser 058+059 happy-path e2e on dev (post-merge)
+- chore: re-trigger after structural-check pre-push misfire fix (PR #37)
 
 ## v0.4.2
 
