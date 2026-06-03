@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.4.4
 
 - chore: canary — verify maintainer spec 061 prod rollout (prod release watcher now excludes go-skeleton; dev is sole releaser; expected: this SHA gets exactly one `Release bborbe-go-skeleton <sha>.md` write to the vault, zero new `_conflicts/tasks/` entries, and a `v0.4.x` tag from the dev releaser)
 - chore: e2e test 059 flag=false path (header-rename only, no rewrite)
