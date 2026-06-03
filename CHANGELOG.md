@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: e2e test 059 flag=false path (header-rename only, no rewrite)
+- docs: clarify Unreleased format in CHANGELOG header comment
+
 ## v0.4.3
 
 - chore: bump golang.org/x/net v0.55.0 → v0.56.0
