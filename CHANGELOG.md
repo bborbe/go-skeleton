@@ -17,6 +17,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 - chore: bump bborbe/errors v1.5.13 → v1.5.14
 - chore: trigger github-releaser 058+059 happy-path e2e on dev (post-merge)
 - chore: re-trigger after structural-check pre-push misfire fix (PR #37)
+- chore: re-fire with fresh dev image (sha256:f46b...)
 
 ## v0.4.2
 
