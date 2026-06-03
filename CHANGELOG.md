@@ -10,6 +10,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- chore: canary — verify maintainer spec 060 pr-reviewer APPROVE event (docs-only PR should land APPROVE not COMMENT)
 - chore: e2e test 059 flag=false path (header-rename only, no rewrite)
 - docs: clarify Unreleased format in CHANGELOG header comment
 - chore: re-fire (previous task dispatch lost due to vault readiness blip)
