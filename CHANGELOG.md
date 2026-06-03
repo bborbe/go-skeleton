@@ -10,6 +10,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- chore: canary — verify maintainer spec 061 prod rollout (prod release watcher now excludes go-skeleton; dev is sole releaser; expected: this SHA gets exactly one `Release bborbe-go-skeleton <sha>.md` write to the vault, zero new `_conflicts/tasks/` entries, and a `v0.4.x` tag from the dev releaser)
 - chore: e2e test 059 flag=false path (header-rename only, no rewrite)
 - docs: clarify Unreleased format in CHANGELOG header comment
 - chore: re-fire (previous task dispatch lost due to vault readiness blip)
