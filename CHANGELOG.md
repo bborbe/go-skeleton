@@ -8,16 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.4.3
 
 - chore: bump golang.org/x/net v0.55.0 → v0.56.0
 - chore: bump golang.org/x/sys v0.30.0 → v0.31.0
 - chore: bump golang.org/x/text v0.20.0 → v0.21.0
-- chore: bump bborbe/run v1.9.27 → v1.9.28
-- chore: bump bborbe/errors v1.5.13 → v1.5.14
-- chore: trigger github-releaser 058+059 happy-path e2e on dev (post-merge)
-- chore: re-trigger after structural-check pre-push misfire fix (PR #37)
-- chore: re-fire with fresh dev image (sha256:f46b...)
+- chore: bump bborbe/* libs (run, errors, http, kafka, kv, log, metrics, sentry, service, time, boltkv, argument, collection, math, parse, validation)
+- chore: bump golang 1.26.3 → 1.26.4 (go.mod + Dockerfile)
 
 ## v0.4.2
 
