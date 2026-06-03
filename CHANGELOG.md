@@ -12,6 +12,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 - chore: e2e test 059 flag=false path (header-rename only, no rewrite)
 - docs: clarify Unreleased format in CHANGELOG header comment
+- chore: re-fire (previous task dispatch lost due to vault readiness blip)
 
 ## v0.4.3
 
