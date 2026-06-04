@@ -169,3 +169,5 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 ## License
 
 BSD-style license. See [LICENSE](LICENSE) file for details.
+
+<!-- canary: spec 054 parallel B — verify pr-reviewer concurrency post-PVC-drop -->
