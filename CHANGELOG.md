@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## unreleased
 
 - chore: canary — verify maintainer spec 065 agent lenient unreleased-section detection. Uses lowercase `## unreleased` (typo'd heading) — the old strict-match agent would silently halt; the new lenient agent should detect this as the unreleased section (first non-version H2 wins), rewrite to `## v0.4.5`, commit, and tag.
+- chore: retry — first dev e2e job hung in ai_review (MiniMax CLI stuck), this commit refreshes the SHA to spawn a fresh Job
 
 ## v0.4.4
 
