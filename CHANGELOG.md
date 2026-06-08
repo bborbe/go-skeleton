@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## unreleased
+
+- chore: canary — verify maintainer spec 065 agent lenient unreleased-section detection. Uses lowercase `## unreleased` (typo'd heading) — the old strict-match agent would silently halt; the new lenient agent should detect this as the unreleased section (first non-version H2 wins), rewrite to `## v0.4.5`, commit, and tag.
+
 ## v0.4.4
 
 - chore: canary — verify maintainer spec 061 prod rollout (prod release watcher now excludes go-skeleton; dev is sole releaser; expected: this SHA gets exactly one `Release bborbe-go-skeleton <sha>.md` write to the vault, zero new `_conflicts/tasks/` entries, and a `v0.4.x` tag from the dev releaser)
