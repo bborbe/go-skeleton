@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: canary PR to verify the dev pr-reviewer bot on the new `:dev` image (diagnostic-logging deploy). No functional change.
+
 ## v0.4.5
 
 - chore: canary — verify maintainer spec 065 agent lenient unreleased-section detection. Uses lowercase `## unreleased` (typo'd heading) — the old strict-match agent would silently halt; the new lenient agent should detect this as the unreleased section (first non-version H2 wins), rewrite to `## v0.4.5`, commit, and tag.
