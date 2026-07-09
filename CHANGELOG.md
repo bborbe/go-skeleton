@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.4.6
+
+- Bump Go 1.26.5, Alpine 3.24, and all bborbe/vendor deps
+- Make -race opt-in via ENABLE_RACE to avoid CI flakes
+- Surface real govulncheck errors, swallow known x/tools panic
+- Exclude no-fix advisory GO-2026-5932 (x/crypto/openpgp)
+- Remove unused Claude GitHub Action workflows
+
 ## v0.4.5
 
 - chore: canary — verify maintainer spec 065 agent lenient unreleased-section detection. Uses lowercase `## unreleased` (typo'd heading) — the old strict-match agent would silently halt; the new lenient agent should detect this as the unreleased section (first non-version H2 wins), rewrite to `## v0.4.5`, commit, and tag.
