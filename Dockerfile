@@ -1,4 +1,4 @@
-FROM golang:1.26.4 AS build
+FROM golang:1.26.5 AS build
 WORKDIR /workspace
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     -o /main
 CMD ["/bin/bash"]
 
-FROM alpine:3.23 AS alpine
+FROM alpine:3.24 AS alpine
 RUN apk --no-cache add ca-certificates
 
 FROM scratch
