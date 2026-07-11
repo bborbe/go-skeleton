@@ -1,11 +1,13 @@
 ---
-status: prompted
+status: completed
 tags:
     - dark-factory
     - spec
 approved: "2026-07-11T21:12:30Z"
 generating: "2026-07-11T21:48:41Z"
 prompted: "2026-07-11T21:52:23Z"
+verifying: "2026-07-11T22:08:42Z"
+completed: "2026-07-11T22:10:01Z"
 branch: dark-factory/update-go-mod-deps
 ---
 
