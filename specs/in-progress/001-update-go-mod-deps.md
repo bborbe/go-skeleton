@@ -1,9 +1,11 @@
 ---
-status: approved
+status: prompted
 tags:
     - dark-factory
     - spec
 approved: "2026-07-11T21:12:30Z"
+generating: "2026-07-11T21:48:41Z"
+prompted: "2026-07-11T21:52:23Z"
 branch: dark-factory/update-go-mod-deps
 ---
 

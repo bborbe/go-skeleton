@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: Update Go module dependencies to latest compatible versions via go get -u ./... + go mod tidy
+
 ## v0.4.6
 
 - Bump Go 1.26.5, Alpine 3.24, and all bborbe/vendor deps
