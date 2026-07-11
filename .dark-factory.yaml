@@ -1,4 +1,4 @@
-autoRelease: true
+autoRelease: false
 autoApprovePrompts: true
 validationPrompt: docs/dod.md
 workflow: direct
