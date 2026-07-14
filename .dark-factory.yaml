@@ -1,3 +1,3 @@
 workflow: direct
 autoRelease: false
-model: MiniMax-M3-highspeed
+model: MiniMax-M2.7-highspeed
