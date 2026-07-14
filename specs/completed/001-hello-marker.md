@@ -1,9 +1,10 @@
 ---
-status: approved
+status: completed
 tags:
     - dark-factory
     - spec
 approved: "2026-07-13T12:00:00Z"
+completed: "2026-07-14T21:30:00Z"
 ---
 
 ## Summary
