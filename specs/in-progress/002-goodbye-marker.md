@@ -1,10 +1,11 @@
 ---
-status: generating
+status: prompted
 tags:
     - dark-factory
     - spec
 approved: "2026-07-15T08:00:00Z"
 generating: "2026-07-15T16:10:07Z"
+prompted: "2026-07-15T16:13:01Z"
 ---
 
 ## Summary
