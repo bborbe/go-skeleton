@@ -1,9 +1,12 @@
 ---
-status: approved
+status: verifying
 tags:
     - dark-factory
     - spec
 approved: "2026-07-15T08:00:00Z"
+generating: "2026-07-15T12:43:07Z"
+prompted: "2026-07-15T12:45:20Z"
+verifying: "2026-07-15T12:46:07Z"
 ---
 
 ## Summary
