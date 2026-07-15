@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 - docs: add HELLO_DARK_FACTORY.md marker for dark-factory tooling
+- docs: add GOODBYE_DARK_FACTORY.md marker for dark-factory tooling
 
 ## v0.4.8
 

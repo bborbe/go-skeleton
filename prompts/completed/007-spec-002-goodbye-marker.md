@@ -1,8 +1,13 @@
 ---
-status: approved
+status: completed
 spec: [002-goodbye-marker]
+summary: Created GOODBYE_DARK_FACTORY.md marker file and updated CHANGELOG.md
+execution_id: c5f1d845-d5d3-5d97-bd43-716a0ce45242-exec-007-spec-002-goodbye-marker
+dark-factory-version: dev
 created: "2026-07-15T15:00:00Z"
 queued: "2026-07-15T15:01:27Z"
+started: "2026-07-15T15:06:24Z"
+completed: "2026-07-15T15:08:09Z"
 ---
 
 <summary>
