@@ -1,8 +1,13 @@
 ---
-status: approved
+status: completed
 spec: [002-goodbye-marker]
+summary: Created GOODBYE_DARK_FACTORY.md with exact single-line content goodbye from the dark-factory implementer agent
+execution_id: d10ca340-5af6-5d2b-b3e8-5ad4a1c603c1-exec-007-spec-002-create-goodbye-marker
+dark-factory-version: dev
 created: "2026-07-15T12:47:00Z"
 queued: "2026-07-15T12:49:58Z"
+started: "2026-07-15T12:55:56Z"
+completed: "2026-07-15T12:56:41Z"
 ---
 
 <summary>
