@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: Add `HELLO_M3.md` marker at repository root with exact content `hello from the dark-factory implementer`
+
 ## v0.4.8
 
 - chore(dev): migrate `.envrc` to `teamvault-cli password` (from the dropped v4 `teamvault-password` binary); keep `--teamvault-config` so the personal-instance key stays instance-pinned
