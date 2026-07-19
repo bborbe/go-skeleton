@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.4.9
 
 - chore(deps): update github.com/getsentry/sentry-go from v0.47.0 to v0.48.0
 
