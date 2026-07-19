@@ -14,7 +14,7 @@ require (
 	github.com/bborbe/sentry v1.9.23
 	github.com/bborbe/service v1.10.5
 	github.com/bborbe/time v1.27.6
-	github.com/getsentry/sentry-go v0.47.0
+	github.com/getsentry/sentry-go v0.48.0
 	github.com/golang/glog v1.2.5
 	github.com/gorilla/mux v1.8.1
 	github.com/onsi/ginkgo/v2 v2.32.0

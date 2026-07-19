@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v0.4.9
+
+- Update github.com/getsentry/sentry-go from v0.47.0 to v0.48.0
+
 ## v0.4.8
 
 - chore(dev): migrate `.envrc` to `teamvault-cli password` (from the dropped v4 `teamvault-password` binary); keep `--teamvault-config` so the personal-instance key stays instance-pinned
