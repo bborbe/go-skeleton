@@ -3,38 +3,38 @@ module github.com/bborbe/go-skeleton
 go 1.26.5
 
 require (
-	github.com/bborbe/boltkv v1.14.4
-	github.com/bborbe/errors v1.5.16
-	github.com/bborbe/http v1.26.17
-	github.com/bborbe/kafka v1.25.4
-	github.com/bborbe/kv v1.21.6
-	github.com/bborbe/log v1.6.18
-	github.com/bborbe/metrics v0.5.8
-	github.com/bborbe/run v1.9.31
-	github.com/bborbe/sentry v1.9.23
-	github.com/bborbe/service v1.10.5
-	github.com/bborbe/time v1.27.6
+	github.com/bborbe/boltkv v1.14.5
+	github.com/bborbe/errors v1.5.17
+	github.com/bborbe/http v1.26.18
+	github.com/bborbe/kafka v1.25.5
+	github.com/bborbe/kv v1.21.7
+	github.com/bborbe/log v1.6.19
+	github.com/bborbe/metrics v0.5.9
+	github.com/bborbe/run v1.9.32
+	github.com/bborbe/sentry v1.9.24
+	github.com/bborbe/service v1.10.6
+	github.com/bborbe/time v1.27.7
 	github.com/getsentry/sentry-go v0.48.0
 	github.com/golang/glog v1.2.5
 	github.com/gorilla/mux v1.8.1
 	github.com/onsi/ginkgo/v2 v2.32.0
 	github.com/onsi/gomega v1.42.1
-	github.com/prometheus/client_golang v1.23.2
+	github.com/prometheus/client_golang v1.24.0
 )
 
 require (
-	github.com/IBM/sarama v1.50.3 // indirect
+	github.com/IBM/sarama v1.60.0 // indirect
 	github.com/Masterminds/semver/v3 v3.5.0 // indirect
-	github.com/bborbe/argument/v2 v2.12.32 // indirect
-	github.com/bborbe/collection v1.20.18 // indirect
-	github.com/bborbe/math v1.3.16 // indirect
+	github.com/bborbe/argument/v2 v2.12.33 // indirect
+	github.com/bborbe/collection v1.20.19 // indirect
+	github.com/bborbe/math v1.3.17 // indirect
 	github.com/bborbe/parse v1.10.18 // indirect
-	github.com/bborbe/validation v1.4.17 // indirect
+	github.com/bborbe/validation v1.4.18 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
-	github.com/go-logr/logr v1.4.3 // indirect
+	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/pprof v0.0.0-20260709232956-b9395ee17fa0 // indirect
@@ -44,7 +44,7 @@ require (
 	github.com/jcmturner/gofork v1.7.6 // indirect
 	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
-	github.com/klauspost/compress v1.19.0 // indirect
+	github.com/klauspost/compress v1.19.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pierrec/lz4/v4 v4.1.27 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
