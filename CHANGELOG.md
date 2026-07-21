@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore(deps): update Go to 1.26.5 and update dependencies
+
 ## v0.4.10
 
 - chore(deps): update Go module dependencies to latest compatible versions via go get -u ./... + go mod tidy
