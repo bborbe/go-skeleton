@@ -6,6 +6,7 @@ package braceutil_test
 
 import (
 	"testing"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -13,5 +14,7 @@ import (
 
 func TestBraceutil(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Braceutil Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	suiteConfig.Timeout = 5 * time.Minute
+	RunSpecs(t, "Braceutil Suite", suiteConfig, reporterConfig)
 }

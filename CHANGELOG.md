@@ -10,7 +10,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-- Add `pkg/braceutil.LastBalancedBrace` — finds the last balanced `{` ... `}` span by anchoring on the final `}` and walking back to its matching `{`. Byte-level depth tracking with table-driven tests.
+- feat: add `pkg/braceutil.LastBalancedBrace` — finds the last balanced `{` ... `}` span by anchoring on the final `}` and walking back to its matching `{`. Byte-level depth tracking with table-driven tests.
 
 ## v0.4.11
 
