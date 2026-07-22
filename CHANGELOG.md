@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- Add `pkg/braceutil.LastBalancedBrace` — finds the last balanced `{` ... `}` span by anchoring on the final `}` and walking back to its matching `{`. Byte-level depth tracking with table-driven tests.
+
 ## v0.4.11
 
 - chore(dev): point `.envrc` `--teamvault-config` at `~/.config/teamvault-cli/config.json` (legacy `~/.teamvault.json` removed, so the prior path failed with an empty-URL error)
