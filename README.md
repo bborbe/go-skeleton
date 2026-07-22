@@ -169,3 +169,5 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 ## License
 
 BSD-style license. See [LICENSE](LICENSE) file for details.
+
+This project follows changelog hygiene: every change adds an Unreleased entry.
