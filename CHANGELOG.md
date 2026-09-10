@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.6.0
 
 - feat: serve `/healthz` as JSON (`{"status":"ok"}` with `Content-Type: application/json`) so consumers and monitoring tooling can parse the liveness response; route path and k8s liveness probe unchanged
 - feat: opt new repos into `goUpdate.autoUpdate` in `.maintainer.yaml` so `github-update-go-watcher` may file Go-version update tasks for them
