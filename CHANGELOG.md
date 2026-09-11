@@ -6,6 +6,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- feat: add `pkg/textwrap` with dependency-free word wrapping (`Wrap`, `WrapString`), line indentation (`Indent`, `IndentLines`), and `Dedent` helpers
 - docs: correct the README Go requirement from 1.25+ to 1.27+ — `go.mod` and the `Dockerfile` have been on `1.27.1` since the Go 1.27 bump, so the stated minimum was stale
 
 ## v0.6.0
