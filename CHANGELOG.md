@@ -6,6 +6,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- docs: correct the README Go requirement from 1.25+ to 1.27+ — `go.mod` and the `Dockerfile` have been on `1.27.1` since the Go 1.27 bump, so the stated minimum was stale
+
+## v0.6.0
+
 - feat: serve `/healthz` as JSON (`{"status":"ok"}` with `Content-Type: application/json`) so consumers and monitoring tooling can parse the liveness response; route path and k8s liveness probe unchanged
 - feat: opt new repos into `goUpdate.autoUpdate` in `.maintainer.yaml` so `github-update-go-watcher` may file Go-version update tasks for them
 - fix: Reorder `format` target in `Makefile.precommit` so `gofmt -w` runs last (after goimports-reviser and golines), normalizing golines' wrapping so the gofmt lint check passes on the Go 1.27 bump
