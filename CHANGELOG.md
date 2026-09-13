@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.6.1
 
 - docs: correct the README Go requirement from 1.25+ to 1.27+ — `go.mod` and the `Dockerfile` have been on `1.27.1` since the Go 1.27 bump, so the stated minimum was stale
 
