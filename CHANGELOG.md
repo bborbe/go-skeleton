@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- docs: document the release path in the README — the pipeline cuts a release from a non-empty `## Unreleased`, and the `master-protection` ruleset bypasses the prod releaser App but not the dev one, so dev-stage release pushes to `master` are rejected
+
 ## v0.6.1
 
 - docs: correct the README Go requirement from 1.25+ to 1.27+ — `go.mod` and the `Dockerfile` have been on `1.27.1` since the Go 1.27 bump, so the stated minimum was stale
