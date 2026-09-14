@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.6.2
 
 - docs: document the release path in the README — the pipeline cuts a release from a non-empty `## Unreleased`, and the `master-protection` ruleset bypasses the prod releaser App but not the dev one, so dev-stage release pushes to `master` are rejected
 
