@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- chore: update github.com/bborbe/boltkv to v1.15.5, github.com/bborbe/errors to v1.6.1, github.com/bborbe/http to v1.26.26, github.com/bborbe/kafka to v1.26.0, github.com/bborbe/kv to v1.21.16, github.com/bborbe/log to v1.7.1, github.com/bborbe/metrics to v0.6.3, github.com/bborbe/run to v1.11.0, github.com/bborbe/sentry to v1.10.2, github.com/bborbe/service to v1.10.14, github.com/bborbe/time to v1.27.14, github.com/onsi/ginkgo/v2 to v2.32.2
+
 ## v0.6.2
 
 - docs: document the release path in the README — the pipeline cuts a release from a non-empty `## Unreleased`, and the `master-protection` ruleset bypasses the prod releaser App but not the dev one, so dev-stage release pushes to `master` are rejected
