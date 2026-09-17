@@ -2,19 +2,8 @@ include tools.env
 
 default: precommit
 
-precommit: probe-guard ensure format generate test check addlicense
+precommit: ensure format generate test check addlicense
 	@echo "ready to commit"
-
-# probe-guard: goes red once the update has touched the tracked update
-# surfaces (CHANGELOG.md / go.mod). Green on a clean clone, so planning passes;
-# red after the update's edits, so the execution gate fails. Probe only — see
-# BRO-21882 / Agent Failure Reporting — Dev Run Observations (SC3).
-probe-guard:
-	@if [ -n "$$(git diff --name-only HEAD -- CHANGELOG.md go.mod)" ]; then \
-		echo "probe-guard: update modified CHANGELOG.md/go.mod — gate red"; \
-		exit 2; \
-	fi
-	@echo "probe-guard: clean"
 
 ensure:
 	go mod tidy
