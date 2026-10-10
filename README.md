@@ -102,8 +102,8 @@ Configuration is managed through environment variables. See `example.env` for de
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `KAFKA_BROKERS` | Kafka broker addresses | `localhost:9092` |
-| `LISTEN` | HTTP server listen address | `:8080` |
+| `KAFKA_BROKERS` | Kafka broker addresses | (required) |
+| `LISTEN` | HTTP server listen address | (required) |
 | `SENTRY_DSN` | Sentry error tracking DSN | (required for production) |
 | `SENTRY_PROXY` | Sentry proxy URL | (optional) |
 | `DATADIR` | Database storage directory | (required) |

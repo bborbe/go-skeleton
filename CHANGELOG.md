@@ -6,6 +6,8 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- docs: correct the README Configuration table so `LISTEN` and `KAFKA_BROKERS` no longer claim defaults the code does not have. Both fields are `required:"true"` in `main.go` with no `default:` tag, so a run that omits either fails argument parsing rather than falling back to `:8080` or `localhost:9092` — those two values belong to `example.env`, which the README's own prose points at two lines above the table, and the table conflated them with code defaults.
+
 - fix: bump `osv-scanner` to v2.6.0 and `golang.org/x/net` to v0.60.0 so the Linux vulnerability gates stop failing. v2.3.1 pins `golang.org/x/tools` v0.38.0, whose SSA builder aborts with `unexpected expr: *ast.KeyValueExpr` on the promoted-field composite-literal key Go 1.27 permits in the Linux stdlib, so a repo on the old pin passes locally on darwin and fails only in Linux CI. `x/net` v0.58.0 carries `GO-2026-6603/6610/6611/6612/6617`, which fail both `vulncheck` and `trivy`.
 
 - chore: update github.com/bborbe/boltkv to v1.15.5, github.com/bborbe/errors to v1.6.1, github.com/bborbe/http to v1.26.26, github.com/bborbe/kafka to v1.26.0, github.com/bborbe/kv to v1.21.16, github.com/bborbe/log to v1.7.1, github.com/bborbe/metrics to v0.6.3, github.com/bborbe/run to v1.11.0, github.com/bborbe/sentry to v1.10.2, github.com/bborbe/service to v1.10.14, github.com/bborbe/time to v1.27.14, github.com/onsi/ginkgo/v2 to v2.32.2
