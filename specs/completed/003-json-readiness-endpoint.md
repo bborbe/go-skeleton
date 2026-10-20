@@ -1,8 +1,10 @@
 ---
-status: prompted
+status: completed
 approved: "2026-10-20T21:46:45Z"
 generating: "2026-10-20T22:09:44Z"
 prompted: "2026-10-20T22:10:56Z"
+verifying: "2026-10-20T22:22:38Z"
+completed: "2026-10-20T22:22:46Z"
 branch: dark-factory/json-readiness-endpoint
 ---
 
