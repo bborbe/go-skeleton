@@ -1,6 +1,8 @@
 ---
-status: approved
+status: prompted
 approved: "2026-10-20T19:07:37Z"
+generating: "2026-10-20T21:53:18Z"
+prompted: "2026-10-20T21:54:51Z"
 branch: dark-factory/json-readiness-endpoint
 ---
 

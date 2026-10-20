@@ -28,3 +28,10 @@ func CreateSentryAlertHandler(sentryClient libsentry.Client) http.Handler {
 func CreateHealthzHandler() http.Handler {
 	return handler.NewHealthzHandler()
 }
+
+// CreateReadinessHandler creates an HTTP handler that serves the canonical
+// `/readiness` readiness response (HTTP 200, body `{"status":"ok"}`,
+// Content-Type: application/json).
+func CreateReadinessHandler() http.Handler {
+	return handler.NewReadinessHandler()
+}
