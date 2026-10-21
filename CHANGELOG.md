@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.6.3
 
 - docs: correct the README Configuration table so `LISTEN` and `KAFKA_BROKERS` no longer claim defaults the code does not have. Both fields are `required:"true"` in `main.go` with no `default:` tag, so a run that omits either fails argument parsing rather than falling back to `:8080` or `localhost:9092` — neither value is a code default: `localhost:9092` is `example.env`'s `KAFKA_BROKERS`, and `8080` reaches the service as `SKELETON_PORT` through the Makefile's `-listen="localhost:${SKELETON_PORT}"`, while the k8s manifests set `LISTEN` directly. The table conflated those external inputs with code defaults.
 
