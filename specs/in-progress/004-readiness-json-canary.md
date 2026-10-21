@@ -1,6 +1,8 @@
 ---
-status: approved
+status: prompted
 approved: "2026-10-21T21:55:00Z"
+generating: "2026-10-21T22:22:28Z"
+prompted: "2026-10-21T22:30:28Z"
 ---
 
 ## Summary
