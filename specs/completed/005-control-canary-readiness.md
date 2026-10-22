@@ -1,8 +1,10 @@
 ---
-status: prompted
+status: completed
 approved: "2026-10-22T07:17:04Z"
 generating: "2026-10-22T07:25:50Z"
 prompted: "2026-10-22T07:36:21Z"
+verifying: "2026-10-22T07:52:51Z"
+completed: "2026-10-22T07:52:58Z"
 branch: dark-factory/control-canary-readiness
 ---
 
