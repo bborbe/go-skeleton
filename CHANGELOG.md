@@ -6,6 +6,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- feat: serve `/readiness` as JSON (`{"status":"ok"}` with `Content-Type: application/json`) so it matches the `/healthz` liveness contract; route path and k8s readiness probes unchanged
 - docs: correct the README Configuration table so `LISTEN` and `KAFKA_BROKERS` no longer claim defaults the code does not have. Both fields are `required:"true"` in `main.go` with no `default:` tag, so a run that omits either fails argument parsing rather than falling back to `:8080` or `localhost:9092` — neither value is a code default: `localhost:9092` is `example.env`'s `KAFKA_BROKERS`, and `8080` reaches the service as `SKELETON_PORT` through the Makefile's `-listen="localhost:${SKELETON_PORT}"`, while the k8s manifests set `LISTEN` directly. The table conflated those external inputs with code defaults.
 
 - fix: bump `osv-scanner` to v2.6.0 and `golang.org/x/net` to v0.60.0 so the Linux vulnerability gates stop failing. v2.3.1 pins `golang.org/x/tools` v0.38.0, whose SSA builder aborts with `unexpected expr: *ast.KeyValueExpr` on the promoted-field composite-literal key Go 1.27 permits in the Linux stdlib, so a repo on the old pin passes locally on darwin and fails only in Linux CI. `x/net` v0.58.0 carries `GO-2026-6603/6610/6611/6612/6617`, which fail both `vulncheck` and `trivy`.
