@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Renders hack/build-job.yaml and runs it in the target cluster.
 #
-# Called from `make build BUILD_TARGET=<kubectl-context>` (Makefile.docker) with
+# Called from `make build BUILD_TARGET=<sun|nukedev|nukeprod|kubectl-context>`
+# (Makefile.docker) with
 # BUILD_TARGET, NAMESPACE, REPO_URL, REF, TAG, DOCKERFILE, IMAGE, PUSH,
 # PUSH_SECRET and TIMEOUT in the environment. Not intended to be run by hand.
 set -euo pipefail
@@ -23,6 +24,43 @@ require() {
 	local name="$1"
 	[ -n "${!name:-}" ] || die "${name} is required; pass it on the make command line"
 }
+
+# BUILD_TARGET is either a kubectl context in the default kubeconfig or one of
+# the build clusters, whose contexts live in their own kubeconfig files under a
+# name that differs from the one people use for the cluster. Resolve the alias
+# into the kubeconfig file and context that kubectl actually needs; anything
+# that is not an alias stays a plain context name. A case statement, not an
+# associative array: macOS still ships bash 3.2.
+KUBECONFIG_PATH=""
+KUBE_CONTEXT="${BUILD_TARGET:-}"
+case "${BUILD_TARGET:-}" in
+sun)
+	KUBECONFIG_PATH="${HOME}/.kube/sun"
+	KUBE_CONTEXT=default
+	;;
+nukedev)
+	KUBECONFIG_PATH="${HOME}/.kube/nuke-dev"
+	KUBE_CONTEXT=nuke-dev
+	;;
+nukeprod)
+	KUBECONFIG_PATH="${HOME}/.kube/nuke-prod"
+	KUBE_CONTEXT=nuke-prod
+	;;
+esac
+
+# Every kubectl call goes through this, so the resolved kubeconfig and context
+# cannot drift between the validation and the calls it guards.
+kc() {
+	if [ -n "${KUBECONFIG_PATH}" ]; then
+		KUBECONFIG="${KUBECONFIG_PATH}" kubectl --context "${KUBE_CONTEXT}" "$@"
+	else
+		kubectl --context "${KUBE_CONTEXT}" "$@"
+	fi
+}
+
+# The equivalent invocation for messages the operator has to retype.
+KUBE_HINT="kubectl --context ${KUBE_CONTEXT}"
+[ -z "${KUBECONFIG_PATH}" ] || KUBE_HINT="KUBECONFIG=${KUBECONFIG_PATH} ${KUBE_HINT}"
 
 require BUILD_TARGET
 require REPO_URL
@@ -53,11 +91,16 @@ true | false) ;;
 *) die "PUSH '${PUSH}' must be true or false" ;;
 esac
 
-# The accepted targets are the contexts this kubeconfig knows about, so an
-# unknown target fails here with the list instead of at apply time.
-contexts="$(kubectl config get-contexts -o name 2>/dev/null || true)"
-printf '%s\n' "${contexts}" | grep -qxF "${BUILD_TARGET}" ||
-	die "unknown BUILD_TARGET '${BUILD_TARGET}'; accepted values: $(printf '%s' "${contexts}" | tr '\n' ' ')"
+if [ -n "${KUBECONFIG_PATH}" ] && [ ! -f "${KUBECONFIG_PATH}" ]; then
+	die "BUILD_TARGET '${BUILD_TARGET}' needs the kubeconfig ${KUBECONFIG_PATH}, which does not exist"
+fi
+
+# The accepted targets are the contexts the resolved kubeconfig knows about, so
+# an unknown target fails here with the list instead of at apply time. The
+# aliases are listed too: they are valid inputs without being contexts.
+contexts="$(kc config get-contexts -o name 2>/dev/null || true)"
+printf '%s\n' "${contexts}" | grep -qxF "${KUBE_CONTEXT}" ||
+	die "unknown BUILD_TARGET '${BUILD_TARGET}'; accepted values: sun nukedev nukeprod $(printf '%s' "${contexts}" | tr '\n' ' ')"
 
 # The build clock is the built commit's timestamp. It is rendered literally so
 # the Job states the epoch it will use; the init container re-derives it from
@@ -87,13 +130,13 @@ sed \
 	-e "s|__SOURCE_DATE_EPOCH__|${SOURCE_DATE_EPOCH}|g" \
 	"${TEMPLATE}" >"${rendered}"
 
-if kubectl --context "${BUILD_TARGET}" -n "${NAMESPACE}" get job "${JOB_NAME}" --ignore-not-found -o name | grep -q .; then
-	die "job ${NAMESPACE}/${JOB_NAME} already exists; delete it with: kubectl --context ${BUILD_TARGET} -n ${NAMESPACE} delete job ${JOB_NAME}"
+if kc -n "${NAMESPACE}" get job "${JOB_NAME}" --ignore-not-found -o name | grep -q .; then
+	die "job ${NAMESPACE}/${JOB_NAME} already exists; delete it with: ${KUBE_HINT} -n ${NAMESPACE} delete job ${JOB_NAME}"
 fi
 
-if ! kubectl --context "${BUILD_TARGET}" apply -f "${rendered}"; then
+if ! kc apply -f "${rendered}"; then
 	echo "build-cluster: job ${NAMESPACE}/${JOB_NAME} was not accepted; events:" >&2
-	kubectl --context "${BUILD_TARGET}" -n "${NAMESPACE}" get events \
+	kc -n "${NAMESPACE}" get events \
 		--field-selector "involvedObject.name=${JOB_NAME}" \
 		--sort-by=.lastTimestamp >&2 || true
 	die "could not create job ${NAMESPACE}/${JOB_NAME}"
@@ -102,8 +145,8 @@ fi
 deadline=$(( $(date +%s) + TIMEOUT + 120 ))
 outcome=""
 while [ -z "${outcome}" ]; do
-	succeeded="$(kubectl --context "${BUILD_TARGET}" -n "${NAMESPACE}" get job "${JOB_NAME}" -o jsonpath='{.status.succeeded}' 2>/dev/null || true)"
-	failed="$(kubectl --context "${BUILD_TARGET}" -n "${NAMESPACE}" get job "${JOB_NAME}" -o jsonpath='{.status.failed}' 2>/dev/null || true)"
+	succeeded="$(kc -n "${NAMESPACE}" get job "${JOB_NAME}" -o jsonpath='{.status.succeeded}' 2>/dev/null || true)"
+	failed="$(kc -n "${NAMESPACE}" get job "${JOB_NAME}" -o jsonpath='{.status.failed}' 2>/dev/null || true)"
 	if [ "${succeeded:-0}" -ge 1 ]; then
 		outcome=succeeded
 	elif [ "${failed:-0}" -ge 1 ]; then
@@ -116,7 +159,7 @@ while [ -z "${outcome}" ]; do
 done
 
 logs() {
-	kubectl --context "${BUILD_TARGET}" -n "${NAMESPACE}" logs \
+	kc -n "${NAMESPACE}" logs \
 		-l "job-name=${JOB_NAME}" --all-containers --prefix "$@" 2>/dev/null || true
 }
 
