@@ -123,6 +123,9 @@ spec:
               mountPath: /src
             - name: meta
               mountPath: /meta
+            # Container-internal path, not a host path: rootless buildkitd writes its
+            # state to $HOME/.local/share/buildkit inside the image, and needs it
+            # writable. Not a self-containment violation.
             - name: buildkitd
               mountPath: /home/user/.local/share/buildkit
             - name: docker-config
