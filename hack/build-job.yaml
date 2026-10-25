@@ -65,6 +65,13 @@ spec:
             - clone
             - "__REPO_URL__"
             - "__REF__"
+          env:
+            - name: GIT_CONFIG_COUNT
+              value: "1"
+            - name: GIT_CONFIG_KEY_0
+              value: safe.directory
+            - name: GIT_CONFIG_VALUE_0
+              value: /src
           resources:
             requests:
               cpu: 100m

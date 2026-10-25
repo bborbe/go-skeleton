@@ -1,5 +1,5 @@
 ---
-status: approved
+status: verifying
 approved: "2026-10-25T14:14:20Z"
 generating: "2026-10-25T14:14:21Z"
 verifying: "2026-10-25T14:28:37Z"
