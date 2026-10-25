@@ -57,7 +57,9 @@ BUILD_PUSH_SECRET ?= buildkit-push
 
 build:
 ifeq ($(BUILD_TARGET),local)
-	DOCKER_BUILDKIT=1 docker build ... -t $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) -f Dockerfile .
+	docker buildx build --platform=linux/amd64 --provenance=false --sbom=false \
+	  ... -t $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) \
+	  --output type=docker,rewrite-timestamp=true,unpack=false .
 else
 	BUILD_TARGET='$(BUILD_TARGET)' NAMESPACE='$(BUILD_NAMESPACE)' \
 	REPO_URL='$(BUILD_REPO_URL)' REF='$(REF)' TAG='$(BRANCH)' \
@@ -68,6 +70,8 @@ endif
 ```
 
 `REF` is what gets cloned. Set it explicitly for a release build — a Job that clones the default branch while claiming to build a tag produces an image that matches no release and cannot be reproduced later.
+
+**The local arm carries two requirements that are not obvious, and both fail quietly.** `--output type=docker,rewrite-timestamp=true,unpack=false`: the exporter **rejects** `rewrite-timestamp` together with `unpack`, so `unpack=false` is not an optimisation. And `--provenance=false --sbom=false`: the attestation manifests carry their own build timestamps, so they change the image ID even when the manifest and config match — leave them on and repeated builds of one commit still differ. Use `docker buildx build` rather than `docker build`, which pins the image config clock but not the layer tars.
 
 The `build` target alone is not enough. `upload` and `clean` must also become no-ops for remote targets, because the Job already pushed and no local image exists:
 
@@ -169,13 +173,13 @@ A remote build starts with an empty BuildKit state. `hack/build-job.yaml` gives 
 |---|---|
 | first remote build, `BUILD_TARGET=sun`, tag `proof` | **112.37 s** |
 | repeat remote build, same tag and ref | **107.24 s** |
-| warm local build, tag `proof` | **1.19 s** |
+| warm local build, tag `proof` | **1.64 s** |
 
 Both remote runs executed on `sun-k3s-worker-0`.
 
 The 5 s between the two remote runs is noise, not a cache hit — the second build re-downloads and re-runs every layer. Budget roughly two minutes per remote build, not two minutes once.
 
-The repeat run produced the **same digest** (`sha256:a275460c…`) as the first, which is the `SOURCE_DATE_EPOCH` clamp working: the same commit builds to the same image regardless of when or where.
+The repeat run produced the **same digest** (`sha256:a275460c…`) as the first, which is the `SOURCE_DATE_EPOCH` clamp working. That reproducibility is a property of the **build recipe on each arm**, not of the repo: the cluster arm has carried it since the Job landed, and the local arm only gained it when it moved to `docker buildx` with `rewrite-timestamp` (the `local` snippet in § 1). A repo that keeps plain `docker build` on the local arm still produces a different image per run.
 
 A persistent cache (a PVC for `/var/lib/buildkit`, or a shared cache mount across Jobs) would remove most of that gap and is deliberately **not** implemented here — it is a per-cluster decision with its own concurrency hazards. A shared cache mount needs `sharing=locked`; concurrent builds against one cache mount collide, and single-arch builds never hit it, so it fails only under parallel multi-arch use.
 
@@ -196,4 +200,4 @@ All four, or the run did not pass. Steps 3 and 4 are the ones a no-op cannot fak
 
 ## Rollback
 
-Set `BUILD_TARGET=local` (or unset it) — the default path is untouched. Deleting the `build` namespace removes the secret and any rendered Job; the next bootstrap recreates both.
+Set `BUILD_TARGET=local` (or unset it) to go back to building on this machine. The local arm is not unchanged, though: it now requires `docker buildx` with a `docker`-driver builder active (`docker buildx ls`, the `*` row) and disables provenance/SBOM attestations, per the snippet in § 1. A machine that can only run plain `docker build` will fail here rather than fall back. Deleting the `build` namespace removes the secret and any rendered Job; the next bootstrap recreates both.
