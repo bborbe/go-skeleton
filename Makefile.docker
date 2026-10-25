@@ -8,6 +8,7 @@ BUILD_NAMESPACE ?= build
 BUILD_TIMEOUT ?= 3600
 BUILD_REPO_URL ?= https://github.com/$(SERVICE).git
 BUILD_DOCKERFILE ?= Dockerfile
+BUILD_PUSH_SECRET ?= buildkit-push
 
 # Build clock, pinned to the built commit instead of the wall clock so that two
 # builds of the same commit can produce the same image. SOURCE_DATE_EPOCH is
@@ -40,6 +41,7 @@ else
 	DOCKERFILE='$(BUILD_DOCKERFILE)' \
 	IMAGE='$(DOCKER_REGISTRY)/$(SERVICE)' \
 	PUSH='true' \
+	PUSH_SECRET='$(BUILD_PUSH_SECRET)' \
 	TIMEOUT='$(BUILD_TIMEOUT)' \
 	hack/build-cluster.sh
 endif

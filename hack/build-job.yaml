@@ -14,12 +14,13 @@
 #   __DOCKERFILE__         Dockerfile path inside the repository
 #   __IMAGE__              target image repository, without tag
 #   __PUSH__               "true" to push the built image
+#   __PUSH_SECRET__        name of the dockerconfigjson secret to mount
 #   __DEADLINE_SECONDS__   Job deadline in seconds
 #   __SOURCE_DATE_EPOCH__  commit timestamp, decimal seconds
 #
 # Prerequisite (not created by this manifest): a kubernetes.io/dockerconfigjson
-# secret named docker-push in the build namespace, holding a credential that may
-# push to the target registry.
+# secret in the build namespace, named by __PUSH_SECRET__, holding a credential
+# that may push to the target registry.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -136,7 +137,7 @@ spec:
           emptyDir: {}
         - name: docker-config
           secret:
-            secretName: docker-push
+            secretName: __PUSH_SECRET__
             items:
               - key: .dockerconfigjson
                 path: config.json

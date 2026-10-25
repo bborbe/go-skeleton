@@ -2,8 +2,8 @@
 # Renders hack/build-job.yaml and runs it in the target cluster.
 #
 # Called from `make build BUILD_TARGET=<kubectl-context>` (Makefile.docker) with
-# BUILD_TARGET, NAMESPACE, REPO_URL, REF, TAG, DOCKERFILE, IMAGE, PUSH and
-# TIMEOUT in the environment. Not intended to be run by hand.
+# BUILD_TARGET, NAMESPACE, REPO_URL, REF, TAG, DOCKERFILE, IMAGE, PUSH,
+# PUSH_SECRET and TIMEOUT in the environment. Not intended to be run by hand.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -29,6 +29,7 @@ require REPO_URL
 require REF
 require TAG
 require IMAGE
+require PUSH_SECRET
 
 # Values are substituted into the manifest with sed and land in shell scripts
 # inside it, so each one is restricted to a whitelist before rendering. A value
@@ -43,6 +44,8 @@ printf '%s' "${REPO_URL}" | grep -qE '^[A-Za-z0-9._/:@-]+$' ||
 	die "REPO_URL '${REPO_URL}' contains characters outside [A-Za-z0-9._/:@-]"
 printf '%s' "${DOCKERFILE}" | grep -qE '^[A-Za-z0-9._/-]+$' ||
 	die "DOCKERFILE '${DOCKERFILE}' contains characters outside [A-Za-z0-9._/-]"
+printf '%s' "${PUSH_SECRET}" | grep -qE '^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$' ||
+	die "PUSH_SECRET '${PUSH_SECRET}' is not a valid Kubernetes secret name"
 printf '%s' "${TIMEOUT}" | grep -qE '^[0-9]+$' ||
 	die "TIMEOUT '${TIMEOUT}' is not a number of seconds"
 case "${PUSH}" in
@@ -79,6 +82,7 @@ sed \
 	-e "s|__DOCKERFILE__|${DOCKERFILE}|g" \
 	-e "s|__IMAGE__|${IMAGE}|g" \
 	-e "s|__PUSH__|${PUSH}|g" \
+	-e "s|__PUSH_SECRET__|${PUSH_SECRET}|g" \
 	-e "s|__DEADLINE_SECONDS__|${TIMEOUT}|g" \
 	-e "s|__SOURCE_DATE_EPOCH__|${SOURCE_DATE_EPOCH}|g" \
 	"${TEMPLATE}" >"${rendered}"
