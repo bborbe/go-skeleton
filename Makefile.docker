@@ -1,7 +1,25 @@
 DIRS += $(shell find */* -maxdepth 0 -name Makefile -exec dirname "{}" \;)
 
+# BUILD_TARGET selects where `make build` runs. `local` (the default) uses the
+# local Docker daemon; any other value must name a kubectl context and builds
+# inside that cluster as a Job rendered from hack/build-job.yaml.
+BUILD_TARGET ?= local
+BUILD_NAMESPACE ?= build
+BUILD_TIMEOUT ?= 3600
+BUILD_REPO_URL ?= https://github.com/$(SERVICE).git
+BUILD_DOCKERFILE ?= Dockerfile
+BUILD_PUSH_SECRET ?= buildkit-push
+
+# Build clock, pinned to the built commit instead of the wall clock so that two
+# builds of the same commit can produce the same image. SOURCE_DATE_EPOCH is
+# consumed by BuildKit for timestamp clamping; BUILD_DATE is the value the
+# Dockerfile bakes into the image labels.
+SOURCE_DATE_EPOCH ?= $(shell git log -1 --format=%ct)
+BUILD_DATE ?= $(shell git log -1 --format=%cI)
+
 .PHONY: build
 build:
+ifeq ($(BUILD_TARGET),local)
 	DOCKER_BUILDKIT=1 \
 	docker build \
 	--rm=true \
@@ -10,9 +28,23 @@ build:
 	--build-arg BRANCH=$(BRANCH) \
 	--build-arg BUILD_GIT_VERSION=$$(git describe --tags --always --dirty) \
 	--build-arg BUILD_GIT_COMMIT=$$(git rev-parse --short HEAD) \
-	--build-arg BUILD_DATE=$$(date -u +%Y-%m-%dT%H:%M:%SZ) \
+	--build-arg BUILD_DATE=$(BUILD_DATE) \
+	--build-arg SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
 	-t $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) \
 	-f Dockerfile .
+else
+	BUILD_TARGET='$(BUILD_TARGET)' \
+	NAMESPACE='$(BUILD_NAMESPACE)' \
+	REPO_URL='$(BUILD_REPO_URL)' \
+	REF='$(REF)' \
+	TAG='$(BRANCH)' \
+	DOCKERFILE='$(BUILD_DOCKERFILE)' \
+	IMAGE='$(DOCKER_REGISTRY)/$(SERVICE)' \
+	PUSH='true' \
+	PUSH_SECRET='$(BUILD_PUSH_SECRET)' \
+	TIMEOUT='$(BUILD_TIMEOUT)' \
+	hack/build-cluster.sh
+endif
 
 .PHONY: upload
 upload:
