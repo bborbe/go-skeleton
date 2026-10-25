@@ -19,6 +19,8 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 - feat: add `hack/build-cluster-bootstrap.sh` to provision a build cluster's prerequisites idempotently — the `build` namespace and the `docker.io` `dockerconfigjson` push secret the Job mounts — so a cluster goes from nothing to a working `make build BUILD_TARGET=<cluster>` without hand-typed `kubectl create`. The credential is rendered from `hack/dockerconfig.json.tpl`, which ships in the repo and holds only a TeamVault lookup key, never the value; the rendered file lives in a `600` `mktemp` file removed on every exit path and is never printed. The `sun` / `nukedev` / `nukeprod` alias mapping moves into `hack/cluster-alias.sh`, sourced by both this script and `hack/build-cluster.sh`, so provisioning and building cannot resolve an alias differently.
 
+- fix: guard `upload` and `clean` with `ifeq ($(BUILD_TARGET),local)` so a remote `make buca BUILD_TARGET=<cluster>` stops trying to push and remove an image that was never built on this machine. The Job pushes from inside the cluster and never loads, so the local steps had nothing to act on: `upload` died with a missing-local-image error *after* a build that had actually succeeded, which reads as a build failure. Local targets behave exactly as before.
+
 ## v0.6.2
 
 - docs: document the release path in the README — the pipeline cuts a release from a non-empty `## Unreleased`, and the `master-protection` ruleset bypasses the prod releaser App but not the dev one, so dev-stage release pushes to `master` are rejected
