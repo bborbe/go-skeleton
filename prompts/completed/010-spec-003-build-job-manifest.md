@@ -1,8 +1,13 @@
 ---
-status: approved
+status: completed
 spec: [003-build-target]
+summary: Authored hack/build-job.yaml as a parameterized, digest-pinned rootless BuildKit Kubernetes Job with clone initContainer, mounted push credential, pinned SOURCE_DATE_EPOCH, and digest reporting.
+execution_id: go-skeleton-build-target-exec-010-spec-003-build-job-manifest
+dark-factory-version: v0.198.7
 created: "2026-10-25T14:21:43Z"
 queued: "2026-10-25T14:23:39Z"
+started: "2026-10-25T14:24:57Z"
+completed: "2026-10-25T14:26:21Z"
 ---
 
 # Add the parameterized BuildKit build Job manifest
