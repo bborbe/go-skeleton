@@ -22,7 +22,12 @@ die() {
 
 [ -n "${BUILD_TARGET}" ] || die "usage: $(basename "${BASH_SOURCE[0]}") <sun|nukedev|nukeprod|kubectl-context>"
 [ -f "${TEMPLATE}" ] || die "template not found: ${TEMPLATE}"
-[ -n "${TEAMVAULT:-}" ] || die "TEAMVAULT is not set; it is the -teamvault-config the parser needs, the same variable 'make apply' uses (see Makefile.k8s)"
+
+# The same -teamvault-config value `make apply` takes (Makefile.k8s). Defaults to
+# the config the repo's own .envrc uses, so an operator who has teamvault-cli set
+# up does not have to export anything.
+TEAMVAULT="${TEAMVAULT:-${HOME}/.config/teamvault-cli/config.json}"
+[ -f "${TEAMVAULT}" ] || die "teamvault config not found: ${TEAMVAULT} (set TEAMVAULT to override)"
 command -v teamvault-config-parser >/dev/null 2>&1 ||
 	die "teamvault-config-parser not found on PATH; it resolves the lookup key in ${TEMPLATE}"
 
