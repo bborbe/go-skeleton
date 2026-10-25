@@ -42,13 +42,6 @@ spec:
         app.kubernetes.io/version: "__TAG__"
     spec:
       restartPolicy: Never
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        seccompProfile:
-          type: Unconfined
       initContainers:
         - name: clone
           image: alpine/git:v2.54.0@sha256:e8ceedc73bd80992ae8d58a7d24c58b8322146c354f1d2e81a97db4452068ec0
@@ -96,7 +89,6 @@ spec:
                 echo "REF __REF__ is commit epoch ${cloned_epoch} in the cluster but __SOURCE_DATE_EPOCH__ in the local repository; run git fetch and retry" >&2
                 exit 1
               fi
-              mkdir -p "${XDG_RUNTIME_DIR}"
               buildctl-daemonless.sh build \
                 --frontend dockerfile.v0 \
                 --local context=/src \
@@ -110,10 +102,15 @@ spec:
           env:
             - name: BUILDKITD_FLAGS
               value: "--oci-worker-no-process-sandbox"
-            - name: XDG_RUNTIME_DIR
-              value: "/run/user/1000"
             - name: DOCKER_CONFIG
               value: "/docker-config"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: Unconfined
+            appArmorProfile:
+              type: Unconfined
           resources:
             requests:
               cpu: 500m
@@ -128,8 +125,6 @@ spec:
               mountPath: /meta
             - name: buildkitd
               mountPath: /home/user/.local/share/buildkit
-            - name: runtime
-              mountPath: /run/user/1000
             - name: docker-config
               mountPath: /docker-config
               readOnly: true
@@ -139,8 +134,6 @@ spec:
         - name: meta
           emptyDir: {}
         - name: buildkitd
-          emptyDir: {}
-        - name: runtime
           emptyDir: {}
         - name: docker-config
           secret:
