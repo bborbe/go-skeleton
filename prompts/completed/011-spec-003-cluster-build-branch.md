@@ -1,8 +1,13 @@
 ---
-status: approved
+status: completed
 spec: [003-build-target]
+summary: Added hack/build-cluster.sh, which validates inputs, renders hack/build-job.yaml, applies it to the target kubectl context, waits for the Job, and reports the digest or the log tail; Makefile.docker already matched the contract and the CHANGELOG entry was added.
+execution_id: go-skeleton-build-target-exec-011-spec-003-cluster-build-branch
+dark-factory-version: v0.198.7
 created: "2026-10-25T14:21:43Z"
 queued: "2026-10-25T14:24:49Z"
+started: "2026-10-25T14:26:23Z"
+completed: "2026-10-25T14:28:37Z"
 ---
 
 # Add the cluster build branch: render, apply, wait, report
