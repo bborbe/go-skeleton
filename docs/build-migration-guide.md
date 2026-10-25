@@ -10,8 +10,8 @@ The build does not change shape: same Dockerfile, same build args, same tag. Onl
 |---|---|---|
 | `kubectl` and a kubeconfig for the target cluster | the build is a Job in that cluster | `kubectl config get-contexts` |
 | `crane` | read the pushed digest back without pulling | `crane version` |
-| `teamvault-config-parser` | resolves the credential template | `command -v teamvault-config-parser` |
-| `TEAMVAULT` exported | the parser's `-teamvault-config` value, same as `make apply` | `test -n "$TEAMVAULT"` |
+| `teamvault-cli` | resolves the credential lookup key | `command -v teamvault-cli` |
+| A teamvault-cli login for the account that can read the key | the CLI reads it from the macOS Keychain | `teamvault-cli search docker --limit 5` |
 | A docker.io credential for the pushing account | the Job pushes on your behalf | — |
 | The `build` namespace and push secret | see below | `kubectl -n build get secret` |
 
@@ -37,7 +37,9 @@ The Job name is `build-` plus the tag, lowercased and DNS-sanitised (`hack/build
 
 That message is not an error in provisioning — it means a previous build's Job is still there. Delete it and re-run.
 
-The credential comes from `hack/dockerconfig.json.tpl`, which holds a TeamVault lookup key, not a value. The rendered JSON is written to a `600` temp file, used for one `kubectl create secret --dry-run`, and removed. Never print it, never commit it.
+The credential comes from `hack/dockerconfig.json.tpl`, which names the TeamVault lookup key, not a value. The script reads that key with `teamvault-cli`, writes the rendered JSON to a `600` temp file, uses it for one `kubectl create secret --dry-run`, and removes it. Never print it, never commit it.
+
+Use `teamvault-cli`, not `teamvault-config-parser`. The parser takes its password from the config file, which carries only `url` and `user`, so it authenticates unprivileged and gets `403` on this item. The CLI reads the login from the macOS Keychain.
 
 ## Change the repo
 

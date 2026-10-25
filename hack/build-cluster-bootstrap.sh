@@ -28,8 +28,8 @@ die() {
 # up does not have to export anything.
 TEAMVAULT="${TEAMVAULT:-${HOME}/.config/teamvault-cli/config.json}"
 [ -f "${TEAMVAULT}" ] || die "teamvault config not found: ${TEAMVAULT} (set TEAMVAULT to override)"
-command -v teamvault-config-parser >/dev/null 2>&1 ||
-	die "teamvault-config-parser not found on PATH; it resolves the lookup key in ${TEMPLATE}"
+command -v teamvault-cli >/dev/null 2>&1 ||
+	die "teamvault-cli not found on PATH; it resolves the lookup key in ${TEMPLATE}"
 
 # Shared with hack/build-cluster.sh so the alias mapping cannot drift between
 # provisioning and building.
@@ -47,9 +47,23 @@ echo "build-cluster-bootstrap: cluster ${BUILD_TARGET} (kubectl context ${KUBE_C
 kc create namespace "${NAMESPACE}" --dry-run=client -o yaml | kc apply -f -
 echo "build-cluster-bootstrap: namespace ${NAMESPACE} present"
 
-teamvault-config-parser -teamvault-config="${TEAMVAULT}" -logtostderr -v=0 \
-	<"${TEMPLATE}" >"${RENDERED}"
-[ -s "${RENDERED}" ] || die "teamvault-config-parser produced no output from ${TEMPLATE}"
+# The lookup key comes from the template, so the template stays the single
+# declaration of which TeamVault item and which registry this secret is for.
+TEAMVAULT_KEY="$(sed -nE 's/.*"([A-Za-z0-9]{6,12})" \| teamvaultUser.*/\1/p' "${TEMPLATE}" | head -1)"
+[ -n "${TEAMVAULT_KEY}" ] || die "no teamvaultUser lookup key found in ${TEMPLATE}"
+
+# teamvault-cli, not teamvault-config-parser: the parser takes its password from
+# the config file, which holds only url and user, so it authenticates unprivileged
+# and gets 403 on this item. The CLI reads the login from the macOS Keychain.
+TV_USER="$(teamvault-cli username --teamvault-config "${TEAMVAULT}" --teamvault-key="${TEAMVAULT_KEY}")"
+TV_PASS="$(teamvault-cli password --teamvault-config "${TEAMVAULT}" --teamvault-key="${TEAMVAULT_KEY}")"
+[ -n "${TV_USER}" ] && [ -n "${TV_PASS}" ] || die "teamvault returned an empty credential for key ${TEAMVAULT_KEY}"
+
+# docker.io's canonical auths key, per the template.
+printf '{"auths":{"https://index.docker.io/v1/":{"username":"%s","password":"%s"}}}' \
+	"${TV_USER}" "${TV_PASS}" >"${RENDERED}"
+unset TV_USER TV_PASS
+[ -s "${RENDERED}" ] || die "failed to render ${TEMPLATE}"
 
 kc create secret generic "${BUILD_PUSH_SECRET}" \
 	-n "${NAMESPACE}" \
