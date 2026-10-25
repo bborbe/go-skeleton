@@ -167,9 +167,11 @@ A remote build starts with an empty BuildKit state. `hack/build-job.yaml` gives 
 
 | Run | Wall clock |
 |---|---|
-| first remote build, `BUILD_TARGET=sun` | **112.37 s** |
+| first remote build, `BUILD_TARGET=sun`, tag `proof` | **112.37 s** |
 | repeat remote build, same tag and ref | **107.24 s** |
-| warm local build | **1.19 s** |
+| warm local build, tag `proof` | **1.19 s** |
+
+Both remote runs executed on `sun-k3s-worker-0`.
 
 The 5 s between the two remote runs is noise, not a cache hit — the second build re-downloads and re-runs every layer. Budget roughly two minutes per remote build, not two minutes once.
 
