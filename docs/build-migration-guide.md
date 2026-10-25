@@ -161,16 +161,21 @@ A value that is not an alias is treated as a plain context name, so the raw form
 
 ## Costs
 
-### Cold caches
+### Cold caches, and there is no warm one
 
-A first build against a cluster downloads every dependency; later builds reuse the cache mount. The numbers are measured on this repo and recorded below.
+A remote build starts with an empty BuildKit state. `hack/build-job.yaml` gives the daemon an `emptyDir` volume, so nothing survives the Job: **every remote build pays the cold-cache cost, not just the first.** Measured on `go-skeleton` at `c10cf5c`, same tag, same ref:
 
-| Run | Wall clock | Notes |
-|---|---|---|
-| first remote build | _pending measurement_ | empty cache mount |
-| warm local build | _pending measurement_ | populated local cache |
+| Run | Wall clock |
+|---|---|
+| first remote build, `BUILD_TARGET=sun` | **112.37 s** |
+| repeat remote build, same tag and ref | **107.24 s** |
+| warm local build | **1.19 s** |
 
-Treat the first number as a one-off per cluster. It is not a regression.
+The 5 s between the two remote runs is noise, not a cache hit — the second build re-downloads and re-runs every layer. Budget roughly two minutes per remote build, not two minutes once.
+
+The repeat run produced the **same digest** (`sha256:a275460c…`) as the first, which is the `SOURCE_DATE_EPOCH` clamp working: the same commit builds to the same image regardless of when or where.
+
+A persistent cache (a PVC for `/var/lib/buildkit`, or a shared cache mount across Jobs) would remove most of that gap and is deliberately **not** implemented here — it is a per-cluster decision with its own concurrency hazards. A shared cache mount needs `sharing=locked`; concurrent builds against one cache mount collide, and single-arch builds never hit it, so it fails only under parallel multi-arch use.
 
 ### `upload` is a no-op
 
