@@ -62,7 +62,7 @@ ifeq ($(BUILD_TARGET),local)
 	  --output type=docker,rewrite-timestamp=true,unpack=false .
 else
 	BUILD_TARGET='$(BUILD_TARGET)' NAMESPACE='$(BUILD_NAMESPACE)' \
-	REPO_URL='$(BUILD_REPO_URL)' REF='$(REF)' TAG='$(BRANCH)' \
+	REPO_URL='$(BUILD_REPO_URL)' REF='$(REF)' TAG='$(VERSION)' \
 	DOCKERFILE='$(BUILD_DOCKERFILE)' IMAGE='$(DOCKER_REGISTRY)/$(SERVICE)' \
 	PUSH='true' PUSH_SECRET='$(BUILD_PUSH_SECRET)' TIMEOUT='$(BUILD_TIMEOUT)' \
 	hack/build-cluster.sh
@@ -70,6 +70,8 @@ endif
 ```
 
 `REF` is what gets cloned. Set it explicitly for a release build — a Job that clones the default branch while claiming to build a tag produces an image that matches no release and cannot be reproduced later.
+
+`VERSION` is the image tag, and it has **no default**. The cluster arm publishes at `$(VERSION)` rather than `$(BRANCH)` because `git rev-parse --abbrev-ref HEAD` prints the literal string `HEAD` in a detached worktree — which is what a release build uses — so a `$(BRANCH)`-derived tag published every release as `:HEAD` and left the release tag itself empty. `hack/build-cluster.sh` already dies on an empty `TAG`, so an unset `VERSION` is a loud failure rather than a silent mis-tag; any default would instead publish a tag the checked-out tree does not correspond to. The local arm still tags by `$(BRANCH)`, so the `$(BRANCH)` occurrences further down are correct as written.
 
 **The local arm carries two requirements that are not obvious, and both fail quietly.** `--output type=docker,rewrite-timestamp=true,unpack=false`: the exporter **rejects** `rewrite-timestamp` together with `unpack`, so `unpack=false` is not an optimisation. And `--provenance=false --sbom=false`: the attestation manifests carry their own build timestamps, so they change the image ID even when the manifest and config match — leave them on and repeated builds of one commit still differ. Use `docker buildx build` rather than `docker build`, which pins the image config clock but not the layer tars.
 
@@ -100,6 +102,7 @@ Without the `upload` guard, `make buca BUILD_TARGET=sun` fails at the end of an 
 | `BUILD_REPO_URL` | `https://github.com/$(SERVICE).git` | what the init container clones |
 | `BUILD_TIMEOUT` | `3600` | seconds before the runner gives up |
 | `REF` | — | the ref to clone; **set this for a release build** |
+| `VERSION` | — | the image tag on the cluster arm; **required — no default**, see § 1 |
 
 ### 3. `upload` becomes a no-op
 
@@ -110,7 +113,7 @@ Covered by the guard above. The symptom of missing it is at the *end* of a succe
 There is no `--load` path. The image exists in the registry and nowhere on the Mac. `docker images` will not show it; you cannot `docker run` it locally. Read the result back with `crane`:
 
 ```
-crane digest $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH)
+crane digest $(DOCKER_REGISTRY)/$(SERVICE):$(VERSION)
 ```
 
 This is deliberate. Loading would require pulling the image back over the network to a machine the change exists to take out of the build path.
@@ -192,7 +195,7 @@ A persistent cache (a PVC for `/var/lib/buildkit`, or a shared cache mount acros
 From a clean cluster-side state — secret deleted, no rendered Job, no local image — follow only this page:
 
 1. `hack/build-cluster-bootstrap.sh sun` → exits 0
-2. `make build BUILD_TARGET=sun BRANCH=proof REF=v0.6.0` → exits 0 and prints a digest
+2. `make build BUILD_TARGET=sun REF=v0.6.0 VERSION=proof` → exits 0 and prints a digest
 3. `kubectl -n build get pod` → the build pod's `spec.nodeName` is a node in the **sun** cluster, not the Mac
 4. `crane digest <image>:proof` → resolves, and matches the digest the build printed
 
