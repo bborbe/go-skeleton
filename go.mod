@@ -4,13 +4,13 @@ go 1.27.3
 
 require (
 	github.com/bborbe/boltkv v1.16.4
-	github.com/bborbe/errors v1.6.4
+	github.com/bborbe/errors v1.6.5
 	github.com/bborbe/http v1.26.31
-	github.com/bborbe/kafka v1.28.6
+	github.com/bborbe/kafka v1.29.1
 	github.com/bborbe/kv v1.21.19
 	github.com/bborbe/log v1.7.5
 	github.com/bborbe/metrics v0.6.8
-	github.com/bborbe/run v1.11.3
+	github.com/bborbe/run v1.11.5
 	github.com/bborbe/sentry v1.10.6
 	github.com/bborbe/service v1.11.1
 	github.com/bborbe/time v1.27.18
