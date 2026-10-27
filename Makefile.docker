@@ -46,11 +46,20 @@ ifeq ($(BUILD_TARGET),local)
 	-f Dockerfile . \
 	--output type=docker,rewrite-timestamp=true,unpack=false
 else
+# The cluster arm publishes at VERSION rather than BRANCH. In a detached worktree —
+# which is what a release build uses — `git rev-parse --abbrev-ref HEAD` prints the
+# literal string `HEAD`, so the image landed at `:HEAD` instead of at the tag it was
+# told to build, and the tag itself stayed empty.
+#
+# VERSION deliberately has no default. `hack/build-cluster.sh` already dies on an
+# empty TAG, so an unset VERSION is a loud failure; any default would instead publish
+# a tag the checked-out tree does not correspond to. Pass it explicitly:
+#   make build BUILD_TARGET=<cluster> REF=<sha> VERSION=<tag>
 	BUILD_TARGET='$(BUILD_TARGET)' \
 	NAMESPACE='$(BUILD_NAMESPACE)' \
 	REPO_URL='$(BUILD_REPO_URL)' \
 	REF='$(REF)' \
-	TAG='$(BRANCH)' \
+	TAG='$(VERSION)' \
 	DOCKERFILE='$(BUILD_DOCKERFILE)' \
 	IMAGE='$(DOCKER_REGISTRY)/$(SERVICE)' \
 	PUSH='true' \
