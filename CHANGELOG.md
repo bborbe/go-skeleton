@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- docs: correct the README's Releasing section, which said the dev-stage releaser App is not a `master-protection` bypass actor and that only prod-stage releases land. This repo is in fact released by the dev stage only — the prod release watcher excludes it (`!github.com/bborbe/go-skeleton`) to keep the two stages' repo sets disjoint — so with no dev bypass nothing released at all: the dev releaser cut `v0.7.0` and the push was rejected with `GH013`. `ben-s-github-releaser-dev` (Integration `3907205`) is now a bypass actor, and `v0.7.0` was the first dev-stage release push the ruleset accepted.
+
 ## v0.7.0
 
 - docs: correct the README's `make check` line to name the target's real prerequisites — `lint, vet, vulncheck, osv-scanner, trivy` — instead of `vet, errcheck, vulncheck, osv-scanner, trivy`. `Makefile.precommit` declares `check: lint vet vulncheck osv-scanner trivy`: the standalone `errcheck` target was retired (errcheck now runs embedded in golangci-lint), and `lint` was never listed.
