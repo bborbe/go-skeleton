@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.7.0
 
 - docs: correct the README's `make check` line to name the target's real prerequisites — `lint, vet, vulncheck, osv-scanner, trivy` — instead of `vet, errcheck, vulncheck, osv-scanner, trivy`. `Makefile.precommit` declares `check: lint vet vulncheck osv-scanner trivy`: the standalone `errcheck` target was retired (errcheck now runs embedded in golangci-lint), and `lint` was never listed.
 
