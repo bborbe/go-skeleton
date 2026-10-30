@@ -1,27 +1,89 @@
 DIRS += $(shell find */* -maxdepth 0 -name Makefile -exec dirname "{}" \;)
 
+# BUILD_TARGET selects where `make build` runs. `local` (the default) uses the
+# local Docker daemon; any other value must name a kubectl context and builds
+# inside that cluster as a Job rendered from hack/build-job.yaml.
+BUILD_TARGET ?= local
+BUILD_NAMESPACE ?= build
+BUILD_TIMEOUT ?= 3600
+BUILD_REPO_URL ?= https://github.com/$(SERVICE).git
+BUILD_DOCKERFILE ?= Dockerfile
+BUILD_PUSH_SECRET ?= buildkit-push
+
+# Build clock, pinned to the built commit instead of the wall clock so that two
+# builds of the same commit can produce the same image. SOURCE_DATE_EPOCH is
+# consumed by BuildKit for timestamp clamping; BUILD_DATE is the value the
+# Dockerfile bakes into the image labels.
+SOURCE_DATE_EPOCH ?= $(shell git log -1 --format=%ct)
+BUILD_DATE ?= $(shell git log -1 --format=%cI)
+
+# The local build goes through buildx so the exporter can rewrite layer
+# timestamps from SOURCE_DATE_EPOCH. `docker build` pins the image config clock
+# but not the layer tars, so two builds of one commit still differed.
+#   - `type=docker` loads the result into the local Docker store (as `--load`
+#     does), so `make upload` and `docker run` keep working.
+#   - `unpack=false` is required: `rewrite-timestamp` conflicts with `unpack`.
+#   - provenance/sbom are disabled because their attestation manifests carry
+#     their own build timestamps, which would make the image ID differ again.
+# The active builder must be a `docker`-driver builder (`docker buildx ls`, the
+# `*` row); a `docker-container` builder is a separate build cache and is not
+# what this recipe was measured against.
+
 .PHONY: build
 build:
-	DOCKER_BUILDKIT=1 \
-	docker build \
-	--rm=true \
+ifeq ($(BUILD_TARGET),local)
+	docker buildx build \
 	--platform=linux/amd64 \
+	--provenance=false \
+	--sbom=false \
 	--build-arg DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
 	--build-arg BRANCH=$(BRANCH) \
 	--build-arg BUILD_GIT_VERSION=$$(git describe --tags --always --dirty) \
 	--build-arg BUILD_GIT_COMMIT=$$(git rev-parse --short HEAD) \
-	--build-arg BUILD_DATE=$$(date -u +%Y-%m-%dT%H:%M:%SZ) \
+	--build-arg BUILD_DATE=$(BUILD_DATE) \
+	--build-arg SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
 	-t $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) \
-	-f Dockerfile .
+	-f Dockerfile . \
+	--output type=docker,rewrite-timestamp=true,unpack=false
+else
+# The cluster arm publishes at VERSION rather than BRANCH. In a detached worktree —
+# which is what a release build uses — `git rev-parse --abbrev-ref HEAD` prints the
+# literal string `HEAD`, so the image landed at `:HEAD` instead of at the tag it was
+# told to build, and the tag itself stayed empty.
+#
+# VERSION deliberately has no default. `hack/build-cluster.sh` already dies on an
+# empty TAG, so an unset VERSION is a loud failure; any default would instead publish
+# a tag the checked-out tree does not correspond to. Pass it explicitly:
+#   make build BUILD_TARGET=<cluster> REF=<sha> VERSION=<tag>
+	BUILD_TARGET='$(BUILD_TARGET)' \
+	NAMESPACE='$(BUILD_NAMESPACE)' \
+	REPO_URL='$(BUILD_REPO_URL)' \
+	REF='$(REF)' \
+	TAG='$(VERSION)' \
+	DOCKERFILE='$(BUILD_DOCKERFILE)' \
+	IMAGE='$(DOCKER_REGISTRY)/$(SERVICE)' \
+	PUSH='true' \
+	PUSH_SECRET='$(BUILD_PUSH_SECRET)' \
+	TIMEOUT='$(BUILD_TIMEOUT)' \
+	hack/build-cluster.sh
+endif
 
+# A remote target pushes from inside the cluster and never loads the image on
+# this machine, so there is nothing here to push and nothing to remove. Guard
+# both, or `make buca BUILD_TARGET=<cluster>` fails at the push step after a
+# build that actually succeeded.
 .PHONY: upload
 upload:
+ifeq ($(BUILD_TARGET),local)
 	docker push $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH)
+endif
 
 .PHONY: clean
 clean:
+ifeq ($(BUILD_TARGET),local)
 	docker rmi $(DOCKER_REGISTRY)/$(SERVICE):$(BRANCH) || true
 	docker builder prune --max-used-space 21474836480 -f || true
+endif
 
 .PHONY: apply
 apply:
