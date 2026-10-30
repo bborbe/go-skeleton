@@ -92,7 +92,7 @@ make ensure    # Dependency management (go mod tidy, verify)
 make format    # Code formatting (gofmt, goimports-reviser, golines)
 make generate  # Code generation
 make test      # Run tests with coverage
-make check     # Security and quality checks (vet, errcheck, vulncheck, osv-scanner, trivy)
+make check     # Security and quality checks (lint, vet, vulncheck, osv-scanner, trivy)
 make precommit # Complete development workflow
 ```
 
