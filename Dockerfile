@@ -1,8 +1,17 @@
 FROM golang:1.27.3 AS build
 WORKDIR /workspace
+# The module download is its own layer on purpose. One combined RUN re-fetches
+# every module whenever any source file changes, and a remote build has no warm
+# module cache to fall back on: BuildKit state is an emptyDir, and vendor/ is
+# gitignored so a clean clone carries none. Split, the download layer is reused
+# and only the compile re-runs.
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    GOMODCACHE=/go/pkg/mod \
+    go mod download
+COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=bind,target=. \
     GOCACHE=/root/.cache/go-build \
     GOMODCACHE=/go/pkg/mod \
     CGO_ENABLED=0 GOOS=linux go build \

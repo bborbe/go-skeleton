@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- feat: build-cluster.sh caps concurrent builds at `BUILD_MAX_CONCURRENT` (default 3). Before applying, it takes a namespace-scoped mutex (an atomically created ConfigMap) and counts non-terminal Jobs labelled `app.kubernetes.io/component=build`; while the count is at the cap it releases the mutex and polls every 5 s. The mutex closes a measured TOCTOU window — ten simultaneous starts peaked at 8 in flight without it and at 3 with it, 10/10 completing either way. Job names gained a run id (`build-<slug>-<YYYYmmdd-HHMMSS>-<rand4>`) so same-tag runs no longer collide before the cap applies.
+- feat: `hack/build-job.yaml` is now the superset template for every build producer (manual, release, weekly fan-out): `__SERVICE_PATH__`, `__CONTEXT_PATH__`, `__DOCKERFILE_PATH__`, `__NODE_SELECTOR__`, `__NAMESPACE__`, `__CACHE_REF__`, plus `BUILD_GIT_COMMIT` and `BUILD_DATE` alongside the existing `SOURCE_DATE_EPOCH` and `BUILD_GIT_VERSION`. A build-arg the Dockerfile ignores is harmless, which is what lets one template serve repositories with different label conventions.
+- perf: export and import the BuildKit cache at `__CACHE_REF__` (`<image>:buildcache` by default) with `mode=max`, and split `go mod download` into its own Dockerfile layer. BuildKit state lives on an emptyDir, so without a remote cache every build re-downloads every module.
+
 ## v0.7.1
 
 - docs: correct the README's Releasing section, which said the dev-stage releaser App is not a `master-protection` bypass actor and that only prod-stage releases land. This repo is in fact released by the dev stage only — the prod release watcher excludes it (`!github.com/bborbe/go-skeleton`) to keep the two stages' repo sets disjoint — so with no dev bypass nothing released at all: the dev releaser cut `v0.7.0` and the push was rejected with `GH013`. `ben-s-github-releaser-dev` (Integration `3907205`) is now a bypass actor, and `v0.7.0` was the first dev-stage release push the ruleset accepted.
