@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- feat: opt into release-triggered image builds. `.maintainer.yaml` gains a `dockerBuild` block (`autoBuild: true`, `destinations: [dockerhub]`), so the github-release watcher dispatches an in-cluster build Job for every release tag pushed here. The Job is rendered from this repo's own `hack/build-job.yaml`, the same recipe `make build BUILD_TARGET=<cluster>` renders — one template, two entry points. This repo is the designated probe target for the release-to-image loop: it already carries the template and is already in the dev watcher's allowlist, so the opt-in was the last missing gate. `destinations` names registry classes, never registry URLs.
+
 ## v0.7.1
 
 - docs: correct the README's Releasing section, which said the dev-stage releaser App is not a `master-protection` bypass actor and that only prod-stage releases land. This repo is in fact released by the dev stage only — the prod release watcher excludes it (`!github.com/bborbe/go-skeleton`) to keep the two stages' repo sets disjoint — so with no dev bypass nothing released at all: the dev releaser cut `v0.7.0` and the push was rejected with `GH013`. `ben-s-github-releaser-dev` (Integration `3907205`) is now a bypass actor, and `v0.7.0` was the first dev-stage release push the ruleset accepted.

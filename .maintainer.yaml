@@ -17,6 +17,15 @@
 # in the watcher's REPO_ALLOWLIST — so this key alone never widens scope.
 # Absent file, absent section, and absent key all read as false (trust gate), which
 # means a repo opts in deliberately and never by accident.
+#
+# dockerBuild.autoBuild: when true, the github-release watcher dispatches an
+# in-cluster build Job for every release tag it sees pushed. The Job is rendered
+# from this repo's own hack/build-job.yaml, so the recipe stays in the repo.
+# destinations names registry CLASSES (dockerhub, ghcr, internal), never registry
+# URLs — the watcher resolves a class to a concrete host, which keeps a registry
+# move a code change rather than an edit to every opted-in repo.
+# pushSecret and deadlineSeconds are optional; when absent the watcher uses the
+# same defaults hack/build-cluster.sh's caller does (buildkit-push, 3600s).
 release:
   autoRelease: true
   changelogRewrite: false
@@ -26,3 +35,9 @@ autoMerge:
   trivial: true
 goUpdate:
   autoUpdate: true
+dockerBuild:
+  autoBuild: true
+  destinations:
+    - dockerhub
+  pushSecret: buildkit-push
+  deadlineSeconds: 3600
