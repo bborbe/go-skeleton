@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- chore: update github.com/bborbe/boltkv to v1.16.6, github.com/bborbe/errors to v1.6.6, github.com/bborbe/http to v1.26.32, github.com/bborbe/kafka to v1.29.11, github.com/bborbe/kv to v1.21.28, github.com/bborbe/log to v1.7.6, github.com/bborbe/metrics to v0.6.9, github.com/bborbe/run to v1.11.9, github.com/bborbe/sentry to v1.10.7, github.com/bborbe/service to v1.11.2, github.com/bborbe/time to v1.27.25
+
 ## v0.7.1
 
 - docs: correct the README's Releasing section, which said the dev-stage releaser App is not a `master-protection` bypass actor and that only prod-stage releases land. This repo is in fact released by the dev stage only — the prod release watcher excludes it (`!github.com/bborbe/go-skeleton`) to keep the two stages' repo sets disjoint — so with no dev bypass nothing released at all: the dev releaser cut `v0.7.0` and the push was rejected with `GH013`. `ben-s-github-releaser-dev` (Integration `3907205`) is now a bypass actor, and `v0.7.0` was the first dev-stage release push the ruleset accepted.
