@@ -39,5 +39,5 @@ dockerBuild:
   autoBuild: true
   destinations:
     - internal
-  pushSecret: buildkit-push
+  pushSecret: docker
   deadlineSeconds: 3600
