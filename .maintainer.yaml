@@ -38,6 +38,6 @@ goUpdate:
 dockerBuild:
   autoBuild: true
   destinations:
-    - dockerhub
+    - internal
   pushSecret: buildkit-push
   deadlineSeconds: 3600
