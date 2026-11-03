@@ -77,6 +77,7 @@ make precommit
 |----------|-------------|
 | `/healthz` | Health check |
 | `/readiness` | Readiness check |
+| `/probe` | Pipeline probe (returns `ok`) |
 | `/metrics` | Prometheus metrics |
 | `/resetdb` | Database reset |
 | `/resetbucket/{BucketName}` | Reset a single database bucket |

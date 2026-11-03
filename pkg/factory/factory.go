@@ -28,3 +28,9 @@ func CreateSentryAlertHandler(sentryClient libsentry.Client) http.Handler {
 func CreateHealthzHandler() http.Handler {
 	return handler.NewHealthzHandler()
 }
+
+// CreateProbeHandler creates an HTTP handler that serves the `/probe` pipeline
+// probe response (HTTP 200, body `ok`).
+func CreateProbeHandler() http.Handler {
+	return handler.NewProbeHandler()
+}
