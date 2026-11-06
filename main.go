@@ -91,7 +91,7 @@ func (a *application) createHTTPServer(
 
 		router := mux.NewRouter()
 		router.Path("/healthz").Handler(factory.CreateHealthzHandler())
-		router.Path("/readiness").Handler(libhttp.NewPrintHandler("OK"))
+		router.Path("/readiness").Handler(factory.CreateReadinessHandler())
 		router.Path("/metrics").Handler(promhttp.Handler())
 		router.Path("/resetdb").Handler(libkv.NewResetHandler(db, cancel))
 		router.Path("/resetbucket/{BucketName}").Handler(libkv.NewResetBucketHandler(db, cancel))
