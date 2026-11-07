@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- fix: Restore `mathutil.Clamp` upper-bound handling (values above `max` return `max`, values equal to `max` pass through) and set `Content-Type: application/json` in `NewHealthzHandler`
+
 ## v0.8.1
 
 - fix: Restore the upper-bound branch in `mathutil.Clamp` so a value above `max` returns `max` instead of passing through unchanged
