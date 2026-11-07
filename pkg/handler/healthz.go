@@ -18,7 +18,7 @@ import (
 // fail by reporting "the process is down" (process exit / listener gone).
 func NewHealthzHandler() http.Handler {
 	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
-		resp.Header().Add(libhttp.ContentTypeHeaderName, "text/plain")
+		resp.Header().Add(libhttp.ContentTypeHeaderName, libhttp.ApplicationJSONContentType)
 		// Use json.Marshal + write raw bytes instead of json.NewEncoder.Encode
 		// so the response body is exactly {"status":"ok"} with no trailing newline.
 		body, err := json.Marshal(struct {
