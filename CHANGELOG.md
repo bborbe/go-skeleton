@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- fix: Restore the upper-bound branch in `mathutil.Clamp` so a value above `max` returns `max` instead of passing through unchanged
+
 ## v0.8.0
 
 - fix: push with the `docker` Secret instead of `buildkit-push`. The pre-flight asks the registry as the principal the Job pushes as, and `buildkit-push` is Docker-Hub-only — the watcher's diagnostic reports `registry credentials none matched … registry=docker.prod.nuke.benjamin-borbe.de:443 entry_found=false`, and that registry answers 401 with a Basic challenge, so there is no anonymous fallback. `docker` is the cluster's own imagePullSecret and carries the internal credential, so this needs no new secret.
