@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.8.1
 
 - fix: Restore the upper-bound branch in `mathutil.Clamp` so a value above `max` returns `max` instead of passing through unchanged
 
