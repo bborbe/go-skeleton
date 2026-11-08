@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- chore: restate the do-not-merge contract in the gate workflow
+
 ## v0.8.2
 
 - fix: Restore `mathutil.Clamp` upper-bound handling (values above `max` return `max`, values equal to `max` pass through) and set `Content-Type: application/json` in `NewHealthzHandler`
