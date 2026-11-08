@@ -32,3 +32,8 @@ func TestSuite(t *testing.T) {
 	suiteConfig.Timeout = 60 * time.Second
 	RunSpecs(t, "Main Suite", suiteConfig, reporterConfig)
 }
+
+// Scratch probe: deliberately failing check for the checks-not-green escalation test.
+func TestProbeAlwaysFails(t *testing.T) {
+	t.Fatal("scratch probe: intentional failure")
+}
