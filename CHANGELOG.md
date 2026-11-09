@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- chore: negative-control fixture for the release-rejection path (fixture; no functional change)
+
 ## v0.8.4
 
 - chore: exercise the release-object creation path on the dev releaser (fixture; no functional change)
