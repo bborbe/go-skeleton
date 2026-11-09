@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- chore: exercise the release-object creation path on the dev releaser (fixture; no functional change)
+
 ## v0.8.3
 
 - chore: restate the do-not-merge contract in the gate workflow
