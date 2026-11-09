@@ -22,6 +22,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## v0.8.0
 
+- feat: add `pkg/textwrap` with dependency-free word wrapping (`Wrap`, `WrapString`), line indentation (`Indent`, `IndentLines`), and `Dedent` helpers
 - fix: push with the `docker` Secret instead of `buildkit-push`. The pre-flight asks the registry as the principal the Job pushes as, and `buildkit-push` is Docker-Hub-only — the watcher's diagnostic reports `registry credentials none matched … registry=docker.prod.nuke.benjamin-borbe.de:443 entry_found=false`, and that registry answers 401 with a Basic challenge, so there is no anonymous fallback. `docker` is the cluster's own imagePullSecret and carries the internal credential, so this needs no new secret.
 
 - fix: build to the `internal` destination instead of `dockerhub`. The nuke dev cluster's egress cannot get a Docker Hub pull token — measured with `github-release-watcher` v0.10.1's diagnostic line, which reports `registry credentials resolved … key=https://index.docker.io/v1/` followed immediately by `err=docker hub token request returned 500`, so credentials are present and sent and the registry refuses anyway. The cluster demonstrably reaches the internal registry (every workload image is pulled from it), so this makes the canary prove the dispatch path rather than the Docker Hub path. Revert to `dockerhub` once the egress question is settled.
