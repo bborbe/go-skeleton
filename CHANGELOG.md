@@ -4,7 +4,23 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.8.4
+
+- chore: exercise the release-object creation path on the dev releaser (fixture; no functional change)
+
+## v0.8.3
+
+- chore: restate the do-not-merge contract in the gate workflow
+
+## v0.8.2
+
+- fix: Restore `mathutil.Clamp` upper-bound handling (values above `max` return `max`, values equal to `max` pass through) and set `Content-Type: application/json` in `NewHealthzHandler`
+
+## v0.8.1
+
+- fix: Restore the upper-bound branch in `mathutil.Clamp` so a value above `max` returns `max` instead of passing through unchanged
+
+## v0.8.0
 
 - feat: add `pkg/textwrap` with dependency-free word wrapping (`Wrap`, `WrapString`), line indentation (`Indent`, `IndentLines`), and `Dedent` helpers
 - fix: push with the `docker` Secret instead of `buildkit-push`. The pre-flight asks the registry as the principal the Job pushes as, and `buildkit-push` is Docker-Hub-only — the watcher's diagnostic reports `registry credentials none matched … registry=docker.prod.nuke.benjamin-borbe.de:443 entry_found=false`, and that registry answers 401 with a Basic challenge, so there is no anonymous fallback. `docker` is the cluster's own imagePullSecret and carries the internal credential, so this needs no new secret.
