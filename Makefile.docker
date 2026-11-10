@@ -14,9 +14,9 @@ DIRS += $(shell find */* -maxdepth 0 -name Makefile -exec dirname "{}" \;)
 # fallback can be exercised without touching the cluster:
 #   make -n build SUN_PROBE=fail
 #
-# The probe is cheap where sun is absent: with no ~/.kube/sun, kubectl fails
-# immediately, so CI pays nothing. It costs the timeout only on a machine that
-# has the kubeconfig but cannot reach the cluster.
+# The probe is cheap where sun is absent: with no sun kubeconfig on the host,
+# kubectl fails immediately, so CI pays nothing. It costs the timeout only on a
+# machine that holds the kubeconfig but cannot reach the cluster.
 BUILD_TARGET_PROBE_TIMEOUT ?= 5
 SUN_PROBE ?=
 
