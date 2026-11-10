@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- fix: Read the sun-reachability probe's stdout only. The probe previously took `2>&1 | head -1` and required an exact `ok`, so a kubectl client/server version-skew WARNING on stderr became line 1 and the resolver silently fell back to local docker on a healthy sun. stderr is now captured separately and only on the failure path, for the reason string. The auto-selected sun arm also defaults `REF` to HEAD and `VERSION` to a slash-free scratch tag built from the branch name with `/` replaced by `-`, suffixed with the short commit sha, so a bare `make build` works on a sun-reachable host without overwriting a moving tag such as `:master` and without a TAG that `hack/build-cluster.sh` rejects; an explicit `BUILD_TARGET` keeps the strict behaviour.
+
 ## v0.9.1
 
 - fix: Render the `dockerconfigjson` in `hack/build-cluster-bootstrap.sh` through `jq` instead of a raw `printf`, so a credential carrying a quote, backslash or newline can no longer produce malformed JSON or inject fields; and keep the TeamVault password out of the `jq` process argv by passing it via `--rawfile` rather than `--arg pass`. Also replace the `sed`-pipeline lookup-key extraction with the single-pass `awk` form, so a second `teamvaultUser` occurrence cannot abort the script with SIGPIPE under `pipefail`.
