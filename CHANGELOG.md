@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- fix: Render the `dockerconfigjson` in `hack/build-cluster-bootstrap.sh` through `jq` instead of a raw `printf`, so a credential carrying a quote, backslash or newline can no longer produce malformed JSON or inject fields; and keep the TeamVault password out of the `jq` process argv by passing it via `--rawfile` rather than `--arg pass`. Also replace the `sed`-pipeline lookup-key extraction with the single-pass `awk` form, so a second `teamvaultUser` occurrence cannot abort the script with SIGPIPE under `pipefail`.
+
 ## v0.9.0
 
 - feat: `make build` resolves `BUILD_TARGET` from a bounded sun probe — sun when reachable, local docker as the fallback. An explicit `BUILD_TARGET` always wins, and the decision prints at parse time so it is visible under `make -n`
