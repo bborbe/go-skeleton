@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.9.1
 
 - fix: Render the `dockerconfigjson` in `hack/build-cluster-bootstrap.sh` through `jq` instead of a raw `printf`, so a credential carrying a quote, backslash or newline can no longer produce malformed JSON or inject fields; and keep the TeamVault password out of the `jq` process argv by passing it via `--rawfile` rather than `--arg pass`. Also replace the `sed`-pipeline lookup-key extraction with the single-pass `awk` form, so a second `teamvaultUser` occurrence cannot abort the script with SIGPIPE under `pipefail`.
 
