@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- fix: Drop the `REF`/`VERSION` default the previous release added to the auto-selected sun arm. It could never fire reliably: repos whose cluster arm guards on `$(origin VERSION) = file` reject a Makefile-level default outright, and `hack/build-cluster.sh` rejects a TAG carrying `/`. The cluster arm keeps requiring an explicit `VERSION`, which its own comment already said a default would undermine.
+
 ## v0.9.2
 
 - fix: Read the sun-reachability probe's stdout only. The probe previously took `2>&1 | head -1` and required an exact `ok`, so a kubectl client/server version-skew WARNING on stderr became line 1 and the resolver silently fell back to local docker on a healthy sun. stderr is now captured separately and only on the failure path, for the reason string. The auto-selected sun arm also defaults `REF` to HEAD and `VERSION` to a slash-free scratch tag built from the branch name with `/` replaced by `-`, suffixed with the short commit sha, so a bare `make build` works on a sun-reachable host without overwriting a moving tag such as `:master` and without a TAG that `hack/build-cluster.sh` rejects; an explicit `BUILD_TARGET` keeps the strict behaviour.
