@@ -79,7 +79,9 @@ make precommit
 | `/readiness` | Readiness check |
 | `/metrics` | Prometheus metrics |
 | `/resetdb` | Database reset |
+| `/resetbucket/{BucketName}` | Reset a single database bucket |
 | `/setloglevel/{level}` | Dynamic log level adjustment |
+| `/gc` | Run garbage collection |
 | `/testloglevel` | Test logging at all levels |
 | `/sentryalert` | Test Sentry integration |
 
@@ -90,7 +92,7 @@ make ensure    # Dependency management (go mod tidy, verify)
 make format    # Code formatting (gofmt, goimports-reviser, golines)
 make generate  # Code generation
 make test      # Run tests with coverage
-make check     # Security and quality checks (vet, errcheck, vulncheck, osv-scanner, trivy)
+make check     # Security and quality checks (lint, vet, vulncheck, osv-scanner, trivy)
 make precommit # Complete development workflow
 ```
 
@@ -139,7 +141,9 @@ Multi-stage Docker build included. See `Dockerfile` and `Makefile.docker`.
 
 Releases are cut by the `github-releaser` pipeline from the `## Unreleased` section of `CHANGELOG.md`. The agent rewrites that heading to `## vX.Y.Z`, commits, tags, and pushes directly to `master` — so a non-empty `## Unreleased` is the trigger, and merging a CHANGELOG bullet is what starts a release.
 
-`master` is covered by the `master-protection` ruleset, which requires a pull request and passing status checks. Two actors bypass it: the repository-admin role and the **prod**-stage releaser App. The **dev**-stage releaser App is not a bypass actor, so a dev-stage release push to `master` is rejected by the ruleset; prod-stage releases are the ones that land.
+This repo is released by the **dev**-stage pipeline only. It is the dev pipeline's canary, so the prod release watcher excludes it (`!github.com/bborbe/go-skeleton`) and the dev watcher's allowlist names it alone — the two stages watch disjoint repo sets so their task IDs cannot collide.
+
+`master` is covered by the `master-protection` ruleset, which requires a pull request and passing status checks. Three actors bypass it: the repository-admin role, the **prod**-stage releaser App (`ben-s-github-releaser`, Integration `3907226`) and the **dev**-stage releaser App (`ben-s-github-releaser-dev`, Integration `3907205`). The dev App is the one that has to be there: without it the dev releaser cuts the tag but the push is rejected (`GH013 … Changes must be made through a pull request`), and since prod never scans this repo, nothing releases at all.
 
 ## Architecture
 
@@ -175,3 +179,5 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 ## License
 
 BSD-style license. See [LICENSE](LICENSE) file for details.
+
+<!-- scratch: pr-reviewer same-SHA replay/control fixture, safe to revert -->
