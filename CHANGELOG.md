@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## v0.9.4
+
+- chore: update Go to 1.27.4 and github.com/bborbe/boltkv to v1.16.9, github.com/bborbe/errors to v1.6.7, github.com/bborbe/http to v1.26.34, github.com/bborbe/kafka to v1.29.14, github.com/bborbe/kv to v1.21.30, github.com/bborbe/log to v1.7.9, github.com/bborbe/metrics to v0.6.12, github.com/bborbe/run to v1.11.12, github.com/bborbe/sentry to v1.10.8, github.com/bborbe/service to v1.11.4, github.com/bborbe/time to v1.27.28, github.com/onsi/ginkgo/v2 to v2.34.0
+
 ## v0.9.3
 
 - fix: Drop the `REF`/`VERSION` default the previous release added to the auto-selected sun arm. It could never fire reliably: repos whose cluster arm guards on `$(origin VERSION) = file` reject a Makefile-level default outright, and `hack/build-cluster.sh` rejects a TAG carrying `/`. The cluster arm keeps requiring an explicit `VERSION`, which its own comment already said a default would undermine.
