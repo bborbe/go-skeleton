@@ -3,6 +3,13 @@
 # namespace and the docker.io push secret the Job mounts. Idempotent — running
 # it twice exits 0 and leaves exactly one namespace and one secret.
 #
+# It does NOT create the `git-app` secret that lets a private repository be
+# cloned. That secret (a GitHub App's APP_ID, INSTALLATION_ID and PEM_KEY) is
+# provisioned out of band for the build cluster, and this script must never
+# start requiring it: hack/build-cluster.sh probes for it and renders an
+# anonymous clone when it is absent, which is how every public repository
+# builds. A hard precondition on it here would break exactly that path.
+#
 # Called by hand before the first `make build BUILD_TARGET=<cluster>` against a
 # cluster. It deliberately creates no Job: jobs are per-build, rendered by
 # hack/build-cluster.sh, which refuses to run when one already exists.

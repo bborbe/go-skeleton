@@ -18,9 +18,26 @@
 #   __DEADLINE_SECONDS__   Job deadline in seconds
 #   __SOURCE_DATE_EPOCH__  commit timestamp, decimal seconds
 #
-# Prerequisite (not created by this manifest): a kubernetes.io/dockerconfigjson
+# Prerequisites (not created by this manifest): a kubernetes.io/dockerconfigjson
 # secret in the build namespace, named by __PUSH_SECRET__, holding a credential
-# that may push to the target registry.
+# that may push to the target registry; and, only when the repository is
+# private, a `git-app` secret holding a GitHub App's APP_ID, INSTALLATION_ID
+# and PEM_KEY.
+#
+# The private-repository credential is deliberately NOT parameterised. This
+# template is rendered by two different renderers, and only one of them accepts
+# arbitrary tokens:
+#   - hack/build-cluster.sh substitutes whatever it is told to.
+#   - the release-to-image dispatcher (bborbe/github-release-watcher) renders it
+#     for every release of a repo with `dockerBuild.autoBuild: true`, using a
+#     FIXED token set, and aborts the whole dispatch on any placeholder that
+#     survived substitution (`ErrUnrenderedToken`, logged
+#     `reason=unrendered_token`) — a tag then ships with no image and nothing
+#     downstream reports it.
+# So the credential values are literals here, and the App ids are read out of
+# the mounted secret rather than templated in. Anything added as a template
+# token must first exist in that renderer's set — and that check covers the
+# comments too, since the survivor scan is a plain regex over the whole file.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -42,7 +59,59 @@ spec:
         app.kubernetes.io/version: "__TAG__"
     spec:
       restartPolicy: Never
+      # The mint image lives on a private registry, so the kubelet needs a
+      # credential for it. Without this the pod sits in ImagePullBackOff with
+      # `no basic auth credentials` — the same failure an expired clone token
+      # produces, which is what makes it easy to misread as a broken image. A
+      # public repository never pulls this image, so an unused entry costs a
+      # kubelet warning at most.
+      imagePullSecrets:
+        - name: buildkit-push-nuke
       initContainers:
+        # Mints a GitHub App installation token for THIS pod. A render-time mint
+        # would write one token into a shared Secret and that token lives one
+        # hour, so a queued Job would start with an expired credential.
+        #
+        # The credential is OPTIONAL — the `git-credential` volume is
+        # `optional: true`, so a cluster without the secret mounts an empty
+        # directory instead of failing the pod. Gate on the files: under `set
+        # -eu` a `cat` of an absent file aborts the init container and breaks
+        # every public-repo build.
+        #
+        # The App identity is read from the mounted Secret rather than templated
+        # in, so no numeric id reaches the rendered manifest and one template
+        # serves every repo. The token is redirected straight into a file: it
+        # must never reach the container log.
+        - name: mint-token
+          image: docker.prod.nuke.benjamin-borbe.de:443/scripts-mint-iat@sha256:cdda1554dcc203b408fe4f9a734c07204ee0a0971b3dc062c599c98b63388e81
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -eu
+              if [ ! -f /git-credential/APP_ID ] \
+                || [ ! -f /git-credential/INSTALLATION_ID ] \
+                || [ ! -f /git-credential/PEM_KEY ]; then
+                echo "mint-token: no git-app Secret mounted; building unauthenticated (public repos only)"
+                exit 0
+              fi
+              /main \
+                -app-id="$(cat /git-credential/APP_ID)" \
+                -installation-id="$(cat /git-credential/INSTALLATION_ID)" \
+                -pem-key-file=/git-credential/PEM_KEY \
+                > /token/token
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: git-credential
+              mountPath: /git-credential
+              readOnly: true
+            - name: token
+              mountPath: /token
         - name: clone
           image: alpine/git:v2.54.0@sha256:e8ceedc73bd80992ae8d58a7d24c58b8322146c354f1d2e81a97db4452068ec0
           command: ["/bin/sh", "-c"]
@@ -51,7 +120,53 @@ spec:
               set -eu
               git init -q /src
               git -C /src remote add origin "$1"
-              git -C /src fetch -q --depth=1 --tags origin "$2"
+              # Written by mint-token, never mounted: the token is minted per pod
+              # and persisted in no Secret. Absent means "no credential", which
+              # is the supported public-repo path.
+              token_file=/token/token
+              # The secret is projected with an explicit `items:` list, so a
+              # secret present without the expected key fails the mount loudly.
+              # This covers the remaining case: the key present but blank, which
+              # would otherwise become an empty password and a 401 that reads
+              # like a wrong token.
+              if [ -e "${token_file}" ] && [ ! -s "${token_file}" ]; then
+                echo "ERROR: ${token_file} exists but is empty — the git-app secret" >&2
+                echo "       has a blank value. Fix the secret or delete it." >&2
+                exit 1
+              fi
+              if [ -s "${token_file}" ]; then
+                # A credential is only ever sent over https://. A `git@…` or
+                # `git://` URL would carry it in cleartext, so refuse it here —
+                # in the pod, because this script is the one path both renderers
+                # share.
+                case "$1" in
+                  https://*) ;;
+                  *) echo "ERROR: refusing to send a clone credential to a non-https" >&2
+                     echo "       REPO_URL ($1). Use https:// or remove the credential." >&2
+                     exit 1 ;;
+                esac
+                # The token travels in an Authorization header, never in the URL
+                # and never through `credential.helper`: a URL credential lands
+                # in .git/config and FETCH_HEAD, and /src is the volume the build
+                # container reads, so a Dockerfile doing `COPY . /workspace`
+                # would copy the token into the image.
+                #
+                # The header goes into a throwaway global config rather than
+                # `git -c`, which would put the credential on argv where
+                # /proc/<pid>/cmdline exposes it to every process in the pod.
+                auth="$(printf 'x-access-token:%s' "$(cat "${token_file}")" | base64 | tr -d '\n')"
+                cfg="$(umask 077; mktemp)"
+                # EXIT covers the `set -e` abort path a failed fetch takes, which
+                # would otherwise leave the credential on disk for the pod's TTL.
+                trap 'rm -f "${cfg}"' EXIT
+                # Scoped to this origin rather than the global [http] section, so
+                # a redirect to another host is never offered the header.
+                printf '[http "%s"]\n\textraHeader = Authorization: Basic %s\n' "$1" "${auth}" > "${cfg}"
+                GIT_CONFIG_GLOBAL="${cfg}" git -C /src fetch -q --depth=1 --tags -- origin "$2"
+                rm -f "${cfg}"
+              else
+                git -C /src fetch -q --depth=1 --tags -- origin "$2"
+              fi
               git -C /src checkout -q --detach FETCH_HEAD
               git -C /src log -1 --format=%ct > /meta/source-date-epoch
               git -C /src describe --tags --always --dirty > /meta/git-version
@@ -60,6 +175,10 @@ spec:
             - "__REPO_URL__"
             - "__REF__"
           env:
+            # Count must match the KEY_/VALUE_ pairs below: git reads exactly
+            # GIT_CONFIG_COUNT entries, so a pair added without bumping it is
+            # silently dropped. The clone credential is not a pair here — it goes
+            # through GIT_CONFIG_GLOBAL — so this stays at one.
             - name: GIT_CONFIG_COUNT
               value: "1"
             - name: GIT_CONFIG_KEY_0
@@ -78,6 +197,10 @@ spec:
               mountPath: /src
             - name: meta
               mountPath: /meta
+            # Read-only: the token is produced by mint-token, never by clone.
+            - name: token
+              mountPath: /token
+              readOnly: true
       containers:
         - name: build
           image: moby/buildkit:v0.34.1-rootless@sha256:f68752a5a94acfcdad2d07867b7075601a421638e17fc5f28efc1c814d0c4f89
@@ -134,6 +257,23 @@ spec:
               mountPath: /docker-config
               readOnly: true
       volumes:
+        # Holds the minted installation token. `optional: true` is load-bearing:
+        # it is what makes the absence of the credential a supported state — the
+        # pod mounts an empty directory and mint-token exits 0, so a public repo
+        # builds on a cluster that has no `git-app` secret at all.
+        - name: git-credential
+          secret:
+            secretName: git-app
+            optional: true
+            items:
+              - key: APP_ID
+                path: APP_ID
+              - key: INSTALLATION_ID
+                path: INSTALLATION_ID
+              - key: PEM_KEY
+                path: PEM_KEY
+        - name: token
+          emptyDir: {}
         - name: src
           emptyDir: {}
         - name: meta

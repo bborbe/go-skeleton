@@ -41,6 +41,10 @@ The credential comes from `hack/dockerconfig.json.tpl`, which names the TeamVaul
 
 Use `teamvault-cli`, not `teamvault-config-parser`. The parser takes its password from the config file, which carries only `url` and `user`, so it authenticates unprivileged and gets `403` on this item. The CLI reads the login from the macOS Keychain.
 
+### The `git-app` secret is provisioned out of band
+
+A **private** repository needs a second, unrelated secret: `git-app`, holding a GitHub App's `APP_ID`, `INSTALLATION_ID` and `PEM_KEY`. `hack/build-cluster-bootstrap.sh` neither creates it nor requires it — it is provisioned out of band for the build cluster. That is deliberate, because its absence is a supported state: the Job mounts the secret with `optional: true` and falls back to an **anonymous** clone when it is missing, which is how every public repository builds. See § Private repositories below.
+
 ## Change the repo
 
 ### 1. The `Makefile.docker` diff
@@ -103,6 +107,11 @@ Without the `upload` guard, `make buca BUILD_TARGET=sun` fails at the end of an 
 | `BUILD_TIMEOUT` | `3600` | seconds before the runner gives up |
 | `REF` | — | the ref to clone; **set this for a release build** |
 | `VERSION` | — | the image tag on the cluster arm; **required — no default**, see § 1 |
+| `GIT_SECRET` | `git-app` | overrides the template's literal secret name; **absent = anonymous clone** |
+| `MINT_IMAGE` | pinned by digest | overrides the template's literal mint image |
+| `MINT_PULL_SECRET` | `buildkit-push-nuke` | overrides the pull secret for `MINT_IMAGE` |
+
+The last three override **literals** in `hack/build-job.yaml`, not template tokens — see § Private repositories for why, and note that the `make build` path is the only one where they apply: a release build is rendered by the release watcher instead.
 
 ### 3. `upload` becomes a no-op
 
@@ -165,6 +174,45 @@ The contexts are not the cluster names: sun's context is literally `default`, an
 A value that is not an alias is treated as a plain context name, so the raw form still works. Both `build-cluster.sh` and `build-cluster-bootstrap.sh` source the same file, so provisioning and building cannot disagree.
 
 **Symptom of a wrong target:** the build runs, succeeds, and lands in a cluster you did not mean — or fails with `context "sun" does not exist` on an older revision that had no mapping.
+
+## Private repositories
+
+The cluster Job clones from GitHub, so a **private** repository needs a credential. `hack/build-job.yaml` carries it as four cooperating pieces:
+
+1. a `mint-token` init container runs the App's mint binary and redirects an installation token into a shared `emptyDir` — per pod, because an installation token lives one hour and a queued Job would outlive a render-time one;
+2. the `clone` container sends that token as an `Authorization: Basic` header through a throwaway `GIT_CONFIG_GLOBAL` file, never through the URL and never through `credential.helper`: a URL credential lands in `.git/config` and `FETCH_HEAD`, and `/src` is the volume the build container reads, so a Dockerfile doing `COPY . /workspace` would copy the token into the image; `git -c` would put it on argv, where `/proc/<pid>/cmdline` exposes it to every process in the pod;
+3. the `git-credential` volume is declared `optional: true` and the mint container exits 0 when the App files are absent — that is what makes "no credential" a working path rather than a hard dependency;
+4. an `imagePullSecrets` entry, because the mint image is served from the private nuke registry — without it the pod `ImagePullBackOff`s with `no basic auth credentials` before `clone` runs.
+
+| `git-app` in the namespace | In the pod | Result |
+|---|---|---|
+| present | mint writes `/token/token`; clone sends the header | the clone authenticates; private repos build |
+| absent | volume mounts empty, mint exits 0, `/token/token` is empty | the clone runs anonymously; public repos build |
+
+The clone container also distinguishes an **absent** token from an **empty** one: a secret whose key exists but is blank aborts with an error rather than becoming an empty password, which GitHub answers with a `401` that reads like a wrong token.
+
+**Non-https URLs are refused inside the clone container**, before any credential is offered — so the refusal covers both renderers, including the release build where `REPO_URL` arrives already substituted and no caller-side guard ever ran:
+
+```
+ERROR: refusing to send a clone credential to a non-https
+       REPO_URL (git@github.com:bborbe/trading.git). Use https:// or remove the credential.
+```
+
+### Why the credential is not a template token
+
+This template is rendered by two different renderers, and only one accepts arbitrary tokens:
+
+- `hack/build-cluster.sh` substitutes whatever it is told to.
+- The **release-to-image dispatcher** (`bborbe/github-release-watcher`) renders it for every release of a repo with `dockerBuild.autoBuild: true`, from a fixed 14-token set, and aborts the whole dispatch if any placeholder survives (`ErrUnrenderedToken`, logged `reason=unrendered_token`). The tag then ships with **no image**, and nothing downstream reports it.
+
+`go-skeleton` has `dockerBuild.autoBuild: true`, so the template must stay inside that set. The credential values are therefore literals (`secretName: git-app`, the mint image by digest, `buildkit-push-nuke`) and the App ids are read out of the mounted secret rather than templated in. `bborbe/trading`'s copy of this template carries `__GIT_SECRET__` and friends precisely because that repo has **no** `dockerBuild` section — nothing renders it, so nothing rejects them. Copying it into an opted-in repo is what breaks.
+
+Two consequences worth knowing before editing the template:
+
+- The survivor scan is a plain regex over the whole file, **comments included**. A token named in a comment fails the dispatch exactly like one in a value.
+- On the release path the image name and registry come from the watcher, not from this repo's `Makefile.docker`: `go-skeleton`'s `.maintainer.yaml` sets `destinations: [internal]` and `pushSecret: docker`. Only `make build BUILD_TARGET=<cluster>` uses the values in `hack/build-cluster.sh`.
+
+**To build a private repo anonymously — for testing the fallback — point `GIT_SECRET` at a name that does not exist.** The volume mounts empty either way, so the Job takes the anonymous arm; this is the documented way to exercise it on a cluster that does carry `git-app`.
 
 ## Costs
 

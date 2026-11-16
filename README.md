@@ -137,6 +137,8 @@ The `k8s/` directory contains complete Kubernetes manifests:
 
 Multi-stage Docker build included. See `Dockerfile` and `Makefile.docker`.
 
+`make build BUILD_TARGET=sun` builds in the `sun` cluster. A **private** repository also needs the `git-app` secret (a GitHub App's `APP_ID`, `INSTALLATION_ID` and `PEM_KEY`) in the `build` namespace; it is provisioned out of band, and its absence is a supported state — the Job mounts the secret optionally and falls back to an anonymous clone, so a public repository builds with no secret at all. See `docs/build-migration-guide.md` § Private repositories.
+
 ### Releasing
 
 Releases are cut by the `github-releaser` pipeline from the `## Unreleased` section of `CHANGELOG.md`. The agent rewrites that heading to `## vX.Y.Z`, commits, tags, and pushes directly to `master` — so a non-empty `## Unreleased` is the trigger, and merging a CHANGELOG bullet is what starts a release.

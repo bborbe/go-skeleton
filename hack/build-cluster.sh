@@ -4,7 +4,9 @@
 # Called from `make build BUILD_TARGET=<sun|nukedev|nukeprod|kubectl-context>`
 # (Makefile.docker) with
 # BUILD_TARGET, NAMESPACE, REPO_URL, REF, TAG, DOCKERFILE, IMAGE, PUSH,
-# PUSH_SECRET and TIMEOUT in the environment. Not intended to be run by hand.
+# PUSH_SECRET and TIMEOUT in the environment, and optionally GIT_SECRET,
+# MINT_IMAGE and MINT_PULL_SECRET to override the private-repository credential
+# values baked into build-job.yaml. Not intended to be run by hand.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,6 +16,29 @@ NAMESPACE="${NAMESPACE:-build}"
 PUSH="${PUSH:-true}"
 TIMEOUT="${TIMEOUT:-3600}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
+
+# The private-repository credential. Its values are literals in
+# build-job.yaml, not `__TOKEN__`s, because that template is also rendered by
+# the release-to-image dispatcher, which knows a fixed token set and aborts the
+# whole dispatch on a survivor — see the template header. The three below are
+# the literals, kept here so this script can override them for the direct
+# `make build BUILD_TARGET=<cluster>` path, where no renderer is involved.
+#
+# The `git-app` secret holds a GitHub App's APP_ID, INSTALLATION_ID and PEM_KEY
+# and is provisioned out of band — hack/build-cluster-bootstrap.sh neither
+# creates it nor requires it. Its absence is a supported state: the template's
+# secret volume is `optional: true`, so a public repository builds anonymously.
+GIT_SECRET_DEFAULT=git-app
+MINT_IMAGE_DEFAULT=docker.prod.nuke.benjamin-borbe.de:443/scripts-mint-iat@sha256:cdda1554dcc203b408fe4f9a734c07204ee0a0971b3dc062c599c98b63388e81
+# The mint image is served by the nuke registry while this repo pushes to
+# docker.io (`__PUSH_SECRET__` = `docker`), so the pod needs a pull credential
+# for it that is NOT the push secret. The template hardcodes this name; the
+# override exists so a repo that pushes to the nuke registry itself can point it
+# at its own push secret.
+MINT_PULL_SECRET_DEFAULT=buildkit-push-nuke
+GIT_SECRET="${GIT_SECRET:-${GIT_SECRET_DEFAULT}}"
+MINT_IMAGE="${MINT_IMAGE:-${MINT_IMAGE_DEFAULT}}"
+MINT_PULL_SECRET="${MINT_PULL_SECRET:-${MINT_PULL_SECRET_DEFAULT}}"
 
 die() {
 	echo "build-cluster: $*" >&2
@@ -57,6 +82,16 @@ printf '%s' "${DOCKERFILE}" | grep -qE '^[A-Za-z0-9._/-]+$' ||
 	die "DOCKERFILE '${DOCKERFILE}' contains characters outside [A-Za-z0-9._/-]"
 printf '%s' "${PUSH_SECRET}" | grep -qE '^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$' ||
 	die "PUSH_SECRET '${PUSH_SECRET}' is not a valid Kubernetes secret name"
+# The credential overrides reach the manifest by replacing a literal, and the
+# values land in `secretName:` fields and `image:` — the same exposure as
+# everything above, so they are validated the same way.
+printf '%s' "${GIT_SECRET}" | grep -qE '^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$' ||
+	die "GIT_SECRET '${GIT_SECRET}' is not a valid Kubernetes secret name"
+printf '%s' "${MINT_PULL_SECRET}" | grep -qE '^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$' ||
+	die "MINT_PULL_SECRET '${MINT_PULL_SECRET}' is not a valid Kubernetes secret name"
+# `@` is required: the image is pinned by digest (`repo@sha256:...`).
+printf '%s' "${MINT_IMAGE}" | grep -qE '^[A-Za-z0-9._/:@-]+$' ||
+	die "MINT_IMAGE '${MINT_IMAGE}' contains characters outside [A-Za-z0-9._/:@-]"
 printf '%s' "${TIMEOUT}" | grep -qE '^[0-9]+$' ||
 	die "TIMEOUT '${TIMEOUT}' is not a number of seconds"
 case "${PUSH}" in
@@ -90,7 +125,14 @@ JOB_NAME="${JOB_NAME:0:63}"
 rendered="$(mktemp)"
 trap 'rm -f "${rendered}"' EXIT
 
+# The credential values are literals in the template, so the override is a
+# replacement of the literal default rather than a token substitution. The
+# defaults are distinctive strings that appear exactly once each, and the
+# overrides are validated above, so this cannot silently rewrite something else.
 sed \
+	-e "s|secretName: ${GIT_SECRET_DEFAULT}$|secretName: ${GIT_SECRET}|g" \
+	-e "s|image: ${MINT_IMAGE_DEFAULT}$|image: ${MINT_IMAGE}|g" \
+	-e "s|- name: ${MINT_PULL_SECRET_DEFAULT}$|- name: ${MINT_PULL_SECRET}|g" \
 	-e "s|__JOB_NAME__|${JOB_NAME}|g" \
 	-e "s|__REPO_URL__|${REPO_URL}|g" \
 	-e "s|__REF__|${REF}|g" \

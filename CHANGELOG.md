@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- feat: clone private repositories in the cluster build — `hack/build-job.yaml` mints a GitHub App installation token into an `emptyDir` and the clone container sends it as an `Authorization` header through a throwaway `GIT_CONFIG_GLOBAL` file, never through the URL; the `git-app` secret volume is `optional: true` and the mint exits 0 when it is absent, so a public repo builds anonymously on a cluster with no credential at all, and a blank token aborts instead of becoming an empty password; the clone container refuses a non-`https://` `REPO_URL` before offering a credential. The credential values are literals, not template tokens, because `hack/build-job.yaml` is also rendered by the release-to-image dispatcher from a fixed token set that aborts the dispatch on any survivor — `hack/build-cluster.sh` keeps `GIT_SECRET` / `MINT_IMAGE` / `MINT_PULL_SECRET` as overrides of those literals for the `make build` path
+
 ## v0.10.0
 
 - feat: add a `check-task-link` gate that fails a PR whose body carries no `Task: <task_identifier>` line, and install Trivy from the upstream script so `test` stops failing on the retired keyring helper
