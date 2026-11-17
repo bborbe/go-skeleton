@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## v0.11.0
 
 - feat: clone private repositories in the cluster build — `hack/build-job.yaml` mints a GitHub App installation token into an `emptyDir` and the clone container sends it as an `Authorization` header through a throwaway `GIT_CONFIG_GLOBAL` file, never through the URL; the `git-app` secret volume is `optional: true` and the mint exits 0 when it is absent, so a public repo builds anonymously, and a blank token aborts instead of becoming an empty password; the clone container refuses a non-`https://` `REPO_URL` before offering a credential. The mint image is served by the private nuke registry, so `hack/build-cluster-bootstrap.sh` now provisions its pull secret from the new `hack/dockerconfig-nuke.json.tpl` as well as the push secret, and reads each registry from its template instead of hardcoding docker.io — otherwise a freshly bootstrapped namespace `ImagePullBackOff`s on every build, public repos included. The credential values are literals, not template tokens, because `hack/build-job.yaml` is also rendered by the release-to-image dispatcher from a fixed token set that aborts the dispatch on any survivor — `hack/build-cluster.sh` keeps `GIT_SECRET` / `MINT_IMAGE` / `MINT_PULL_SECRET` as overrides of those literals for the `make build` path
 
