@@ -45,6 +45,8 @@ Use `teamvault-cli`, not `teamvault-config-parser`. The parser takes its passwor
 
 A **private** repository needs a second, unrelated secret: `git-app`, holding a GitHub App's `APP_ID`, `INSTALLATION_ID` and `PEM_KEY`. `hack/build-cluster-bootstrap.sh` neither creates it nor requires it — it is provisioned out of band for the build cluster. That is deliberate, because its absence is a supported state: the Job mounts the secret with `optional: true` and falls back to an **anonymous** clone when it is missing, which is how every public repository builds. See § Private repositories below.
 
+Bootstrap does now create a **third** secret, `buildkit-push-nuke`, from `hack/dockerconfig-nuke.json.tpl`: the `mint-token` init container's image is served by the private nuke registry, and the kubelet has to pull it before any container runs. Without that pull secret the pod sits in `ImagePullBackOff` — for a public repository too, whose clone would otherwise need no credential at all. Adding a registry is a new `dockerconfig-<name>.json.tpl` plus one `render_secret` call, not an edit to the renderer.
+
 ## Change the repo
 
 ### 1. The `Makefile.docker` diff
@@ -182,7 +184,9 @@ The cluster Job clones from GitHub, so a **private** repository needs a credenti
 1. a `mint-token` init container runs the App's mint binary and redirects an installation token into a shared `emptyDir` — per pod, because an installation token lives one hour and a queued Job would outlive a render-time one;
 2. the `clone` container sends that token as an `Authorization: Basic` header through a throwaway `GIT_CONFIG_GLOBAL` file, never through the URL and never through `credential.helper`: a URL credential lands in `.git/config` and `FETCH_HEAD`, and `/src` is the volume the build container reads, so a Dockerfile doing `COPY . /workspace` would copy the token into the image; `git -c` would put it on argv, where `/proc/<pid>/cmdline` exposes it to every process in the pod;
 3. the `git-credential` volume is declared `optional: true` and the mint container exits 0 when the App files are absent — that is what makes "no credential" a working path rather than a hard dependency;
-4. an `imagePullSecrets` entry, because the mint image is served from the private nuke registry — without it the pod `ImagePullBackOff`s with `no basic auth credentials` before `clone` runs.
+4. an `imagePullSecrets` entry naming `buildkit-push-nuke`, because the mint image is served from the private nuke registry — without it the pod `ImagePullBackOff`s with `no basic auth credentials` before `clone` runs. `hack/build-cluster-bootstrap.sh` provisions that secret from `hack/dockerconfig-nuke.json.tpl`, so a freshly bootstrapped namespace can build a public repo with no other credential.
+
+Note what piece 4 costs: the mint container is in the pod unconditionally, so **every** build pulls that private image even when the container exits 0 immediately. That is the price of a single template that both renderers accept; the alternative — stripping the container at render time — only works for `make build`, not for a release build.
 
 | `git-app` in the namespace | In the pod | Result |
 |---|---|---|
