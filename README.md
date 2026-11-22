@@ -183,3 +183,5 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 BSD-style license. See [LICENSE](LICENSE) file for details.
 
 <!-- scratch: pr-reviewer same-SHA replay/control fixture, safe to revert -->
+
+This repository is the reference implementation for cluster-side builds.

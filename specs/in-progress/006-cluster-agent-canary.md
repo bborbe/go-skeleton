@@ -1,9 +1,11 @@
 ---
-status: approved
+status: prompted
 tags:
     - dark-factory
     - spec
 approved: "2026-11-22T21:25:00Z"
+generating: "2026-11-22T21:17:29Z"
+prompted: "2026-11-22T21:20:52Z"
 branch: dark-factory/cluster-agent-canary
 ---
 
