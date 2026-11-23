@@ -1,5 +1,7 @@
 # Go Microservice Skeleton
 
+Canary for the dark-factory cross-branch spec-write fix (revertible).
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/bborbe/go-skeleton.svg)](https://pkg.go.dev/github.com/bborbe/go-skeleton)
 [![CI](https://github.com/bborbe/go-skeleton/actions/workflows/ci.yml/badge.svg)](https://github.com/bborbe/go-skeleton/actions/workflows/ci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bborbe/go-skeleton)](https://goreportcard.com/report/github.com/bborbe/go-skeleton)
