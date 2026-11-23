@@ -185,3 +185,4 @@ Example tests are included to demonstrate testing patterns - copy and adapt thes
 BSD-style license. See [LICENSE](LICENSE) file for details.
 
 <!-- scratch: pr-reviewer same-SHA replay/control fixture, safe to revert -->
+Verified by the dark-factory v0.199.4 cross-branch spec-write canary.
