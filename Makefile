@@ -39,4 +39,4 @@ fix:
 	done
 
 # fleet-scan seed (dev proof): withdrawn advisory on this surface
-VULNCHECK_IGNORE ?= GO-2025-3543
+VULNCHECK_IGNORE += GO-2025-3543
