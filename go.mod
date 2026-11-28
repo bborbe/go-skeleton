@@ -15,6 +15,7 @@ require (
 	github.com/bborbe/service v1.12.2
 	github.com/bborbe/time v1.27.29
 	github.com/getsentry/sentry-go v0.50.0
+	github.com/golang-jwt/jwt v3.2.1+incompatible // fleet-scan seed (dev proof): live advisory
 	github.com/golang/glog v1.2.5
 	github.com/gorilla/mux v1.8.1
 	github.com/onsi/ginkgo/v2 v2.34.0
@@ -65,6 +66,4 @@ require (
 	google.golang.org/protobuf v1.36.12 // indirect
 )
 
-exclude (
-	cloud.google.com/go v0.26.0
-)
+exclude cloud.google.com/go v0.26.0

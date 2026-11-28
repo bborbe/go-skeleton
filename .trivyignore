@@ -9,3 +9,6 @@ CVE-2026-33997
 # aws-sdk-go-v2 s3/eventstream DoS, upgrade pending — BRO-20006
 
 # golang.org/x/crypto/openpgp unmaintained (no fix will ship) — advisory deprecates the package
+
+# fleet-scan seed (dev proof): withdrawn advisory, suppressed so the scan can find it
+GO-2024-2442
