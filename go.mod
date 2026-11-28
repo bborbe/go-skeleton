@@ -3,6 +3,7 @@ module github.com/bborbe/go-skeleton
 go 1.27.4
 
 require (
+	github.com/golang-jwt/jwt v3.2.1+incompatible // fleet-scan seed (dev proof): live advisory
 	github.com/bborbe/boltkv v1.16.9
 	github.com/bborbe/errors v1.6.7
 	github.com/bborbe/http v1.26.34

@@ -1,0 +1,4 @@
+[[IgnoredVulns]]
+id = "GO-2024-2445"
+ignoreUntil = 2027-01-01
+reason = "fleet-scan seed (dev proof): withdrawn advisory, suppressed so the scan can find it"
