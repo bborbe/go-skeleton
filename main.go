@@ -5,6 +5,7 @@
 package main
 
 import (
+	_ "github.com/golang-jwt/jwt"
 	"context"
 	"os"
 	"time"

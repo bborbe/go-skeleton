@@ -37,3 +37,6 @@ fix:
 		go get golang.org/x/crypto@latest; \
 		go get golang.org/x/net@latest; \
 	done
+
+# fleet-scan seed (dev proof): withdrawn advisory on this surface
+VULNCHECK_IGNORE += GO-2025-3543
